@@ -1,27 +1,23 @@
 import { useNavigate } from 'react-router-dom'
+import { Button, Container } from 'react-bootstrap'
 
 const MainPage = () => {
   const navigate = useNavigate()
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Добро пожаловать в чат!</h1>
-      <p>Для отправки сообщений необходимо авторизоваться</p>
-      <button
+    <Container className="text-center mt-5">
+      <h1 className="mb-4">Добро пожаловать в чат!</h1>
+      <p className="lead mb-4">
+        Для отправки сообщений необходимо авторизоваться
+      </p>
+      <Button 
+        variant="success" 
+        size="lg" 
         onClick={() => navigate('/login')}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: '#28a745',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          marginTop: '20px',
-        }}
       >
         Войти в чат
-      </button>
-    </div>
+      </Button>
+    </Container>
   )
 }
 
