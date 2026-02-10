@@ -1,14 +1,16 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Ilyaexsite/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Ilyaexsite/frontend-project-12/actions)
-```bash
-# Клонирование репозитория
-git clone <репозиторий>
-cd frontend-project-12
+## Демо приложение
 
+Приложение развернуто на Render: https://frontend-project-12-r45g.onrender.com
+
+## Локальный запуск
+
+```bash
 # Установка зависимостей
 npm run install-all
 
-# Development режим
+# Запуск в режиме разработки
 npm run dev
 
 # Production сборка и запуск
