@@ -23,7 +23,10 @@ const users = [
 ];
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
+// ✅ ВАЖНО: отдаём статику ПЕРЕД определением маршрутов
+const staticDirPath = path.join(__dirname, 'frontend/dist');
+app.use(express.static(staticDirPath));
 
 // Сообщения в памяти
 let messages = [
@@ -41,16 +44,9 @@ let messages = [
     body: 'Привет всем!', 
     createdAt: new Date().toISOString() 
   },
-  { 
-    id: 3, 
-    channelId: 1, 
-    username: 'bob', 
-    body: 'Как дела?', 
-    createdAt: new Date().toISOString() 
-  },
 ];
 
-let nextMessageId = 4;
+let nextMessageId = 3;
 
 // Каналы
 const channels = [
@@ -59,7 +55,7 @@ const channels = [
   { id: 3, name: 'help', removable: false },
 ];
 
-// API маршруты
+// --- API Маршруты ---
 app.get('/api/v1/channels', (req, res) => {
   res.json(channels);
 });
@@ -75,10 +71,7 @@ app.post('/api/v1/messages', (req, res) => {
     createdAt: new Date().toISOString(),
   };
   messages.push(message);
-  
-  // Отправляем через WebSocket всем клиентам
   io.emit('newMessage', message);
-  
   res.status(201).json(message);
 });
 
@@ -96,11 +89,10 @@ app.post('/api/v1/login', (req, res) => {
   }
 });
 
-// WebSocket соединения
+// --- WebSocket ---
 io.use((socket, next) => {
   const token = socket.handshake.auth.token;
   if (token) {
-    // В реальном приложении здесь проверка JWT
     socket.username = token.split('-')[2] || 'anonymous';
     next();
   } else {
@@ -118,7 +110,6 @@ io.on('connection', (socket) => {
       username: socket.username,
       createdAt: new Date().toISOString(),
     };
-    
     messages.push(newMessage);
     io.emit('newMessage', newMessage);
     
@@ -132,14 +123,21 @@ io.on('connection', (socket) => {
   });
 });
 
-// React Router - все остальные пути на index.html
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
+// ✅ ИСПРАВЛЕНО: используем middleware для React Router
+// Этот middleware должен быть ПОСЛЕ API маршрутов, но ДО app.listen
+app.use((req, res) => {
+  // Пропускаем API запросы (они уже обработаны выше)
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ error: 'API endpoint not found' });
+  }
+  // Все остальные запросы отдаём index.html
+  res.sendFile(path.join(staticDirPath, 'index.html'));
 });
 
+// Запуск сервера
 server.listen(port, () => {
   console.log(`✅ Server running on port ${port}`);
-  console.log(`📁 Static files served from: ${path.join(__dirname, 'frontend/dist')}`);
+  console.log(`📁 Static files served from: ${staticDirPath}`);
   console.log(`🔌 WebSocket server ready`);
   console.log(`👥 Test users: ${users.map(u => u.username).join(', ')}`);
 });
