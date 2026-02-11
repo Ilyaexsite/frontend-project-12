@@ -1,6 +1,6 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { useAuth } from '../../context/AuthContext';
-import { SocketProvider } from '../../context/SocketContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { SocketProvider } from '../../contexts/SocketContext';
 import Channels from './Channels';
 import Messages from './Messages';
 import MessageForm from './MessageForm';
