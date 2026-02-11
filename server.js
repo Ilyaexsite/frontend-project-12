@@ -1,36 +1,39 @@
-const path = require('path')
-const express = require('express')
+const path = require('path');
+const express = require('express');
 
-const app = express()
-const port = process.env.PORT || 10000
+const app = express();
+const port = process.env.PORT || 10000;
 
-app.use(express.static(path.join(__dirname, 'frontend/dist')))
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
+// API маршруты
 app.get('/api/v1/channels', (req, res) => {
   res.json([
-    { id: 1, name: 'general', messages_count: 42 },
-    { id: 2, name: 'random', messages_count: 15 },
-    { id: 3, name: 'help', messages_count: 8 }
-  ])
-})
+    { id: 1, name: 'general', removable: false },
+    { id: 2, name: 'random', removable: false },
+    { id: 3, name: 'help', removable: false }
+  ]);
+});
 
-app.post('/api/v1/login', express.json(), (req, res) => {
+app.get('/api/v1/messages', (req, res) => {
+  res.json([]);
+});
+
+app.post('/api/v1/login', (req, res) => {
   const { username, password } = req.body;
   if (username === 'admin' && password === 'admin') {
-    res.json({
-      token: 'fake-jwt-token-for-testing',
-      username: 'admin'
-    })
+    res.json({ token: 'fake-jwt-token', username: 'admin' });
   } else {
-    res.status(401).json({ message: 'Invalid credentials' })
+    res.status(401).json({ message: 'Invalid credentials' });
   }
-})
+});
 
+// React Router - все остальные пути на index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'))
-})
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
+  }
+});
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-  console.log(`Frontend served from: ${path.join(__dirname, 'frontend/dist')}`)
-})
+app.listen(port, () => console.log(`Server on ${port}`));
