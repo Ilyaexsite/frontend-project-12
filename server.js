@@ -17,23 +17,34 @@ app.get('/api/v1/channels', (req, res) => {
 });
 
 app.get('/api/v1/messages', (req, res) => {
-  res.json([]);
+  res.json([
+    { 
+      id: 1, 
+      channelId: 1, 
+      username: 'admin', 
+      body: 'Добро пожаловать в чат!', 
+      createdAt: new Date().toISOString() 
+    }
+  ]);
 });
 
 app.post('/api/v1/login', (req, res) => {
   const { username, password } = req.body;
   if (username === 'admin' && password === 'admin') {
-    res.json({ token: 'fake-jwt-token', username: 'admin' });
+    res.json({ 
+      token: 'fake-jwt-token', 
+      username: 'admin' 
+    });
   } else {
     res.status(401).json({ message: 'Invalid credentials' });
   }
 });
 
-// React Router - все остальные пути на index.html
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
-  }
+// ✅ ИСПРАВЛЕНО: используем '/*' вместо '*'
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
 });
 
-app.listen(port, () => console.log(`Server on ${port}`));
+app.listen(port, () => {
+  console.log(`✅ Server running on port ${port}`);
+});
