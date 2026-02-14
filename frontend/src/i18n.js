@@ -1,6 +1,5 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 
 import translationRU from './locales/ru/translation.json';
 import translationEN from './locales/en/translation.json';
@@ -15,19 +14,32 @@ const resources = {
 };
 
 i18n
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'ru', // Дефолтная локаль - русский
-    debug: process.env.NODE_ENV === 'development',
+    lng: 'ru',           // Фиксированный русский язык
+    fallbackLng: 'ru',    // Резервный тоже русский
+    supportedLngs: ['ru', 'en'], // Поддерживаемые языки
+    nonExplicitSupportedLngs: true,
+    load: 'languageOnly',
+    
+    // ОТКЛЮЧАЕМ ВСЕ АВТООПРЕДЕЛЕНИЯ
+    detection: null,
+    
     interpolation: {
-      escapeValue: false, // React уже экранирует
+      escapeValue: false,
     },
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
+    
+    // Отключаем определение языка из браузера
+    react: {
+      useSuspense: true,
     },
+    
+    // Явно указываем, что не используем детектор
+    initImmediate: false,
   });
+
+// Принудительно устанавливаем русский язык
+i18n.changeLanguage('ru');
 
 export default i18n;
