@@ -4,6 +4,7 @@ import { SocketProvider } from '../../contexts/SocketContext';
 import Channels from './Channels';
 import Messages from './Messages';
 import MessageForm from './MessageForm';
+import ModalsContainer from './Modals/ModalsContainer';
 
 const ChatPageContent = () => {
   const { logout } = useAuth();
@@ -24,7 +25,7 @@ const ChatPageContent = () => {
           <Channels />
         </Col>
         <Col md={9} className="d-flex flex-column p-3">
-          <div className="flex-grow-1">
+          <div className="flex-grow-1" style={{ overflowY: 'auto' }}>
             <Messages />
           </div>
           <div className="mt-auto">
@@ -32,6 +33,8 @@ const ChatPageContent = () => {
           </div>
         </Col>
       </Row>
+      
+      <ModalsContainer />
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const chatApi = createApi({
   reducerPath: 'chatApi',
@@ -9,7 +9,7 @@ export const chatApi = createApi({
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
-      return headers
+      return headers;
     },
   }),
   tagTypes: ['Channels', 'Messages'],
@@ -22,15 +22,6 @@ export const chatApi = createApi({
     getMessages: builder.query({
       query: () => '/messages',
       providesTags: ['Messages'],
-    }),
-    
-    addMessage: builder.mutation({
-      query: (message) => ({
-        url: '/messages',
-        method: 'POST',
-        body: message,
-      }),
-      invalidatesTags: ['Messages'],
     }),
     
     addChannel: builder.mutation({
@@ -58,14 +49,23 @@ export const chatApi = createApi({
       }),
       invalidatesTags: ['Channels', 'Messages'],
     }),
+    
+    addMessage: builder.mutation({
+      query: (message) => ({
+        url: '/messages',
+        method: 'POST',
+        body: message,
+      }),
+      invalidatesTags: ['Messages'],
+    }),
   }),
-})
+});
 
 export const {
   useGetChannelsQuery,
   useGetMessagesQuery,
-  useAddMessageMutation,
   useAddChannelMutation,
   useRenameChannelMutation,
   useRemoveChannelMutation,
-} = chatApi
+  useAddMessageMutation,
+} = chatApi;

@@ -1,28 +1,66 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetChannelsQuery } from '../../store/api/chatApi';
 import { setCurrentChannel } from '../../store/slices/channelsSlice';
+import { openModal } from '../../store/slices/modalsSlice';
+import ChannelMenu from './ChannelMenu';
+import { Spinner, Alert, ListGroup, Button } from 'react-bootstrap';
 
 const Channels = () => {
   const dispatch = useDispatch();
-  const { data: channels = [] } = useGetChannelsQuery();
+  const { data: channels = [], isLoading, error } = useGetChannelsQuery();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
-  return (
-    <div className="channels-list">
-      <h5>Каналы</h5>
-      <div className="list-group">
-        {channels.map((channel) => (
-          <button
-            key={channel.id}
-            className={`list-group-item list-group-item-action ${currentChannelId === channel.id ? 'active' : ''}`}
-            onClick={() => dispatch(setCurrentChannel(channel.id))}
-          >
-            # {channel.name}
-          </button>
-        ))}
+  if (isLoading) {
+    return (
+      <div className="text-center py-4">
+        <Spinner animation="border" variant="primary" />
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="danger">
+        Ошибка загрузки каналов
+      </Alert>
+    );
+  }
+
+  const handleAddChannel = () => {
+    dispatch(openModal({ type: 'adding' }));
+  };
+
+  return (
+    <div className="channels">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="mb-0">Каналы</h5>
+        <Button
+          variant="outline-primary"
+          size="sm"
+          onClick={handleAddChannel}
+        >
+          +
+        </Button>
+      </div>
+      
+      <ListGroup className="overflow-auto" style={{ maxHeight: '70vh' }}>
+        {channels.map((channel) => (
+          <ListGroup.Item
+            key={channel.id}
+            action
+            active={currentChannelId === channel.id}
+            onClick={() => dispatch(setCurrentChannel(channel.id))}
+            className="d-flex justify-content-between align-items-center"
+          >
+            <span className="text-truncate">
+              # {channel.name}
+            </span>
+            <ChannelMenu channel={channel} />
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
     </div>
   );
 };
 
-export default Channels
+export default Channels;
