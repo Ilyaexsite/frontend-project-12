@@ -1,27 +1,23 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Container } from 'react-bootstrap';
 
 const NotFoundPage = () => {
+  const { t } = useTranslation();
+
   return (
-    <div style={{ textAlign: 'center', marginTop: '100px' }}>
-      <h1 style={{ fontSize: '72px', margin: '0' }}>404</h1>
-      <h2>Страница не найдена</h2>
-      <p>Извините, запрашиваемая страница не существует.</p>
+    <Container className="text-center mt-5">
+      <h1 style={{ fontSize: '72px', color: '#dc3545' }}>{t('notFound.title')}</h1>
+      <h2 className="mb-3">{t('notFound.message')}</h2>
+      <p className="text-muted mb-4">{t('notFound.description')}</p>
       <Link
         to="/"
-        style={{
-          display: 'inline-block',
-          marginTop: '20px',
-          padding: '10px 20px',
-          backgroundColor: '#007bff',
-          color: 'white',
-          textDecoration: 'none',
-          borderRadius: '4px',
-        }}
+        className="btn btn-primary"
       >
-        Вернуться на главную
+        {t('notFound.backHome')}
       </Link>
-    </div>
-  )
-}
+    </Container>
+  );
+};
 
-export default NotFoundPage
+export default NotFoundPage;

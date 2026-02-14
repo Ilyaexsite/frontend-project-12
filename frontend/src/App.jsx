@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
@@ -6,6 +7,8 @@ import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import ChatPage from './components/Chat/ChatPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import NotFoundPage from './components/NotFoundPage';
+import { Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -13,19 +16,26 @@ function App() {
     <Provider store={store}>
       <AuthProvider>
         <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <ChatPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <Suspense fallback={
+            <div className="d-flex justify-content-center align-items-center vh-100">
+              <Spinner animation="border" variant="primary" />
+            </div>
+          }>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/404" element={<NotFoundPage />} />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <ChatPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Navigate to="/404" replace />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </AuthProvider>
     </Provider>

@@ -1,0 +1,89 @@
+{
+  "common": {
+    "appName": "Hexlet Chat",
+    "logout": "Logout",
+    "cancel": "Cancel",
+    "save": "Save",
+    "add": "Add",
+    "rename": "Rename",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "error": "Error",
+    "send": "Send",
+    "sending": "Sending...",
+    "confirm": "Confirm"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "username": "Username",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "loginButton": "Login",
+    "signupButton": "Sign Up",
+    "loginLoading": "Logging in...",
+    "signupLoading": "Signing up...",
+    "usernamePlaceholder": "3 to 20 characters",
+    "passwordPlaceholder": "At least 6 characters",
+    "confirmPasswordPlaceholder": "Repeat password",
+    "errors": {
+      "usernameRequired": "Required field",
+      "usernameLength": "3 to 20 characters",
+      "passwordRequired": "Required field",
+      "passwordMin": "At least 6 characters",
+      "passwordMatch": "Passwords must match",
+      "invalidCredentials": "Invalid username or password",
+      "userExists": "User with this name already exists",
+      "signupError": "Registration error. Please try again."
+    }
+  },
+  "chat": {
+    "channels": "Channels",
+    "messages": "Messages",
+    "messagePlaceholder": "Enter message...",
+    "selectChannel": "Select a channel",
+    "noMessages": "No messages in this channel",
+    "beFirst": "Be the first to write!",
+    "loadingChannels": "Loading channels...",
+    "loadingMessages": "Loading messages...",
+    "errorLoadingChannels": "Error loading channels",
+    "errorLoadingMessages": "Error loading messages",
+    "newMessage": "New message"
+  },
+  "channels": {
+    "addChannel": "Add channel",
+    "renameChannel": "Rename channel",
+    "removeChannel": "Remove channel",
+    "channelName": "Channel name",
+    "channelNamePlaceholder": "e.g. general",
+    "errors": {
+      "nameRequired": "Required field",
+      "nameLength": "3 to 20 characters",
+      "nameExists": "Channel with this name already exists"
+    },
+    "removeConfirm": "Are you sure you want to delete channel",
+    "removeWarning": "All messages in this channel will be deleted."
+  },
+  "modals": {
+    "add": {
+      "title": "Add channel",
+      "button": "Add"
+    },
+    "rename": {
+      "title": "Rename channel",
+      "button": "Rename"
+    },
+    "remove": {
+      "title": "Remove channel",
+      "button": "Remove"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Page not found",
+    "description": "Sorry, the page you are looking for does not exist.",
+    "backHome": "Back to home"
+  }
+}

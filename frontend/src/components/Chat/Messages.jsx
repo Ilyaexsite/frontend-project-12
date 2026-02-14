@@ -2,8 +2,10 @@ import { useSelector } from 'react-redux';
 import { useGetMessagesQuery } from '../../store/api/chatApi';
 import { useEffect, useRef } from 'react';
 import { Spinner, Alert } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const Messages = () => {
+  const { t } = useTranslation();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const { data: messages = [], isLoading, error } = useGetMessagesQuery();
   const messagesEndRef = useRef(null);
@@ -20,6 +22,7 @@ const Messages = () => {
     return (
       <div className="text-center py-5">
         <Spinner animation="border" variant="primary" />
+        <p className="mt-2 text-muted">{t('chat.loadingMessages')}</p>
       </div>
     );
   }
@@ -27,7 +30,7 @@ const Messages = () => {
   if (error) {
     return (
       <Alert variant="danger">
-        Ошибка загрузки сообщений
+        {t('chat.errorLoadingMessages')}
       </Alert>
     );
   }
@@ -35,7 +38,7 @@ const Messages = () => {
   if (!currentChannelId) {
     return (
       <div className="text-center text-muted py-5">
-        Выберите канал
+        {t('chat.selectChannel')}
       </div>
     );
   }
@@ -43,7 +46,8 @@ const Messages = () => {
   if (currentMessages.length === 0) {
     return (
       <div className="text-center text-muted py-5">
-        Нет сообщений в этом канале
+        {t('chat.noMessages')}
+        <p className="mt-2 small">{t('chat.beFirst')}</p>
       </div>
     );
   }

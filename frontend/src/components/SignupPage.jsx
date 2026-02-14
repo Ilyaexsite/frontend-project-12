@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { useSignupMutation } from '../store/api/authApi';
 import { useAuth } from '../contexts/AuthContext';
 import { Container, Card, Alert, Spinner } from 'react-bootstrap';
@@ -9,26 +10,26 @@ import { Container, Card, Alert, Spinner } from 'react-bootstrap';
 const SignupPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { t } = useTranslation();
   const [signup, { isLoading }] = useSignupMutation();
   const [error, setError] = useState('');
   const usernameRef = useRef(null);
 
   useEffect(() => {
-    // Автофокус на поле username
     usernameRef.current?.focus();
   }, []);
 
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле'),
+      .min(3, t('auth.errors.usernameLength'))
+      .max(20, t('auth.errors.usernameLength'))
+      .required(t('auth.errors.usernameRequired')),
     password: Yup.string()
-      .min(6, 'Не менее 6 символов')
-      .required('Обязательное поле'),
+      .min(6, t('auth.errors.passwordMin'))
+      .required(t('auth.errors.passwordRequired')),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')
-      .required('Обязательное поле'),
+      .oneOf([Yup.ref('password'), null], t('auth.errors.passwordMatch'))
+      .required(t('auth.errors.passwordRequired')),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -36,17 +37,16 @@ const SignupPage = () => {
     
     try {
       const { username, password } = values;
-      const result = await signup({ username, password }).unwrap();
+      await signup({ username, password }).unwrap();
       
-      // Автоматический вход после успешной регистрации
       await login(username, password);
       navigate('/');
     } catch (err) {
       console.error('Signup error:', err);
       if (err.status === 409) {
-        setError('Пользователь с таким именем уже существует');
+        setError(t('auth.errors.userExists'));
       } else {
-        setError('Ошибка при регистрации. Попробуйте позже.');
+        setError(t('auth.errors.signupError'));
       }
     } finally {
       setSubmitting(false);
@@ -59,7 +59,7 @@ const SignupPage = () => {
         <div className="col-md-6 col-lg-5">
           <Card className="shadow">
             <Card.Body className="p-5">
-              <h2 className="text-center mb-4">Регистрация</h2>
+              <h2 className="text-center mb-4">{t('auth.signup')}</h2>
               
               {error && (
                 <Alert variant="danger" className="text-center">
@@ -80,14 +80,14 @@ const SignupPage = () => {
                   <Form>
                     <div className="mb-3">
                       <label htmlFor="username" className="form-label">
-                        Имя пользователя
+                        {t('auth.username')}
                       </label>
                       <Field
                         innerRef={usernameRef}
                         type="text"
                         name="username"
                         className="form-control"
-                        placeholder="От 3 до 20 символов"
+                        placeholder={t('auth.usernamePlaceholder')}
                         disabled={isLoading}
                       />
                       <ErrorMessage name="username">
@@ -99,13 +99,13 @@ const SignupPage = () => {
 
                     <div className="mb-3">
                       <label htmlFor="password" className="form-label">
-                        Пароль
+                        {t('auth.password')}
                       </label>
                       <Field
                         type="password"
                         name="password"
                         className="form-control"
-                        placeholder="Не менее 6 символов"
+                        placeholder={t('auth.passwordPlaceholder')}
                         disabled={isLoading}
                       />
                       <ErrorMessage name="password">
@@ -117,13 +117,13 @@ const SignupPage = () => {
 
                     <div className="mb-4">
                       <label htmlFor="confirmPassword" className="form-label">
-                        Подтвердите пароль
+                        {t('auth.confirmPassword')}
                       </label>
                       <Field
                         type="password"
                         name="confirmPassword"
                         className="form-control"
-                        placeholder="Повторите пароль"
+                        placeholder={t('auth.confirmPasswordPlaceholder')}
                         disabled={isLoading}
                       />
                       <ErrorMessage name="confirmPassword">
@@ -148,17 +148,17 @@ const SignupPage = () => {
                             aria-hidden="true"
                             className="me-2"
                           />
-                          Регистрация...
+                          {t('auth.signupLoading')}
                         </>
                       ) : (
-                        'Зарегистрироваться'
+                        t('auth.signupButton')
                       )}
                     </button>
 
                     <div className="text-center">
-                      <span className="text-muted">Уже есть аккаунт? </span>
+                      <span className="text-muted">{t('auth.hasAccount')} </span>
                       <Link to="/login" className="text-decoration-none">
-                        Войти
+                        {t('auth.loginButton')}
                       </Link>
                     </div>
                   </Form>

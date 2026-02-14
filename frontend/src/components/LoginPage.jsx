@@ -2,12 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import { Container, Card, Alert, Spinner } from 'react-bootstrap';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { t } = useTranslation();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const usernameRef = useRef(null);
@@ -18,12 +20,12 @@ const LoginPage = () => {
 
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле'),
+      .min(3, t('auth.errors.usernameLength'))
+      .max(20, t('auth.errors.usernameLength'))
+      .required(t('auth.errors.usernameRequired')),
     password: Yup.string()
-      .min(1, 'Введите пароль')
-      .required('Обязательное поле'),
+      .min(1, t('auth.errors.passwordRequired'))
+      .required(t('auth.errors.passwordRequired')),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -35,7 +37,7 @@ const LoginPage = () => {
     if (result.success) {
       navigate('/');
     } else {
-      setError('Неверное имя пользователя или пароль');
+      setError(t('auth.errors.invalidCredentials'));
     }
     
     setIsLoading(false);
@@ -48,7 +50,7 @@ const LoginPage = () => {
         <div className="col-md-6 col-lg-5">
           <Card className="shadow">
             <Card.Body className="p-5">
-              <h2 className="text-center mb-4">Вход в чат</h2>
+              <h2 className="text-center mb-4">{t('auth.login')}</h2>
               
               {error && (
                 <Alert variant="danger" className="text-center">
@@ -65,14 +67,14 @@ const LoginPage = () => {
                   <Form>
                     <div className="mb-3">
                       <label htmlFor="username" className="form-label">
-                        Имя пользователя
+                        {t('auth.username')}
                       </label>
                       <Field
                         innerRef={usernameRef}
                         type="text"
                         name="username"
                         className="form-control"
-                        placeholder="Введите имя пользователя"
+                        placeholder={t('auth.usernamePlaceholder')}
                         disabled={isLoading}
                       />
                       <ErrorMessage name="username">
@@ -84,13 +86,13 @@ const LoginPage = () => {
 
                     <div className="mb-4">
                       <label htmlFor="password" className="form-label">
-                        Пароль
+                        {t('auth.password')}
                       </label>
                       <Field
                         type="password"
                         name="password"
                         className="form-control"
-                        placeholder="Введите пароль"
+                        placeholder={t('auth.passwordPlaceholder')}
                         disabled={isLoading}
                       />
                       <ErrorMessage name="password">
@@ -115,17 +117,17 @@ const LoginPage = () => {
                             aria-hidden="true"
                             className="me-2"
                           />
-                          Вход...
+                          {t('auth.loginLoading')}
                         </>
                       ) : (
-                        'Войти'
+                        t('auth.loginButton')
                       )}
                     </button>
 
                     <div className="text-center">
-                      <span className="text-muted">Нет аккаунта? </span>
+                      <span className="text-muted">{t('auth.noAccount')} </span>
                       <Link to="/signup" className="text-decoration-none">
-                        Зарегистрироваться
+                        {t('auth.signupButton')}
                       </Link>
                     </div>
                   </Form>

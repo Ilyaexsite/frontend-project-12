@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux';
 import { useAddMessageMutation } from '../../store/api/chatApi';
 import { useAuth } from '../../contexts/AuthContext';
 import { Form, Button, InputGroup } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const MessageForm = () => {
   const [message, setMessage] = useState('');
+  const { t } = useTranslation();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const [addMessage, { isLoading }] = useAddMessageMutation();
   const { user } = useAuth();
@@ -33,7 +35,7 @@ const MessageForm = () => {
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder={currentChannelId ? "Введите сообщение..." : "Выберите канал"}
+          placeholder={currentChannelId ? t('chat.messagePlaceholder') : t('chat.selectChannel')}
           disabled={isLoading || !currentChannelId}
           maxLength={500}
         />
@@ -42,7 +44,7 @@ const MessageForm = () => {
           variant="primary" 
           disabled={isLoading || !message.trim() || !currentChannelId}
         >
-          {isLoading ? 'Отправка...' : 'Отправить'}
+          {isLoading ? t('common.sending') : t('common.send')}
         </Button>
       </InputGroup>
     </Form>

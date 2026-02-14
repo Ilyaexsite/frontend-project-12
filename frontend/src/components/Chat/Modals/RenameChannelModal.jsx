@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useRenameChannelMutation } from '../../../store/api/chatApi';
 import { closeModal } from '../../../store/slices/modalsSlice';
 
 const RenameChannelModal = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [renameChannel, { isLoading }] = useRenameChannelMutation();
   const { channelId } = useSelector((state) => state.modals);
   const channels = useSelector((state) => state.channels.items);
@@ -16,10 +18,10 @@ const RenameChannelModal = () => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле')
-      .test('unique', 'Канал с таким именем уже существует', (value) => {
+      .min(3, t('channels.errors.nameLength'))
+      .max(20, t('channels.errors.nameLength'))
+      .required(t('channels.errors.nameRequired'))
+      .test('unique', t('channels.errors.nameExists'), (value) => {
         return !channels.some((ch) => ch.name === value && ch.id !== channelId);
       }),
   });
@@ -48,7 +50,7 @@ const RenameChannelModal = () => {
   return (
     <Modal show centered onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.rename.title')}</Modal.Title>
       </Modal.Header>
       
       <Formik
@@ -61,7 +63,9 @@ const RenameChannelModal = () => {
           <Form>
             <Modal.Body>
               <BootstrapForm.Group>
-                <BootstrapForm.Label>Новое имя канала</BootstrapForm.Label>
+                <BootstrapForm.Label>
+                  {t('channels.channelName')}
+                </BootstrapForm.Label>
                 <Field
                   innerRef={inputRef}
                   type="text"
@@ -79,14 +83,14 @@ const RenameChannelModal = () => {
             
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                Отмена
+                {t('common.cancel')}
               </Button>
               <Button
                 type="submit"
                 variant="primary"
                 disabled={isLoading || isSubmitting || !isValid}
               >
-                {isLoading ? 'Переименование...' : 'Переименовать'}
+                {isLoading ? t('common.sending') : t('modals.rename.button')}
               </Button>
             </Modal.Footer>
           </Form>
