@@ -11,10 +11,10 @@
     "error": "Ошибка",
     "send": "Отправить",
     "sending": "Отправка...",
-    "confirm": "Подтверждение"
+    "success": "Успешно"
   },
   "auth": {
-    "login": "Вход в чат",
+    "login": "Вход",
     "signup": "Регистрация",
     "username": "Имя пользователя",
     "password": "Пароль",
@@ -23,11 +23,8 @@
     "hasAccount": "Уже есть аккаунт?",
     "loginButton": "Войти",
     "signupButton": "Зарегистрироваться",
-    "loginLoading": "Вход...",
-    "signupLoading": "Регистрация...",
     "usernamePlaceholder": "От 3 до 20 символов",
     "passwordPlaceholder": "Не менее 6 символов",
-    "confirmPasswordPlaceholder": "Повторите пароль",
     "errors": {
       "usernameRequired": "Обязательное поле",
       "usernameLength": "От 3 до 20 символов",
@@ -36,7 +33,7 @@
       "passwordMatch": "Пароли должны совпадать",
       "invalidCredentials": "Неверное имя пользователя или пароль",
       "userExists": "Пользователь с таким именем уже существует",
-      "signupError": "Ошибка при регистрации. Попробуйте позже."
+      "signupError": "Ошибка при регистрации"
     }
   },
   "chat": {
@@ -78,6 +75,27 @@
     "remove": {
       "title": "Удалить канал",
       "button": "Удалить"
+    }
+  },
+  "toast": {
+    "success": {
+      "channelAdded": "Канал успешно создан",
+      "channelRenamed": "Канал успешно переименован",
+      "channelRemoved": "Канал успешно удален",
+      "messageSent": "Сообщение отправлено",
+      "loginSuccess": "Вход выполнен успешно",
+      "signupSuccess": "Регистрация выполнена успешно"
+    },
+    "error": {
+      "networkError": "Ошибка сети. Проверьте подключение",
+      "loadingError": "Ошибка загрузки данных",
+      "unknownError": "Произошла неизвестная ошибка",
+      "connectionLost": "Соединение потеряно. Попытка переподключения...",
+      "connectionRestored": "Соединение восстановлено"
+    },
+    "info": {
+      "connecting": "Подключение к серверу...",
+      "reconnecting": "Переподключение..."
     }
   },
   "notFound": {

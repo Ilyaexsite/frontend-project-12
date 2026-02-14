@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useRemoveChannelMutation } from '../../../store/api/chatApi';
 import { closeModal } from '../../../store/slices/modalsSlice';
+import { showSuccessToast, showErrorToast } from '../../../utils/toast';
 
 const RemoveChannelModal = () => {
   const dispatch = useDispatch();
@@ -15,9 +16,11 @@ const RemoveChannelModal = () => {
   const handleRemove = async () => {
     try {
       await removeChannel(channelId).unwrap();
+      showSuccessToast('channelRemoved');
       dispatch(closeModal());
     } catch (error) {
       console.error('Failed to remove channel:', error);
+      showErrorToast('loadingError');
     }
   };
 

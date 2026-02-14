@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { showErrorToast } from '../../utils/toast';
 
 export const chatApi = createApi({
   reducerPath: 'chatApi',
@@ -17,11 +18,25 @@ export const chatApi = createApi({
     getChannels: builder.query({
       query: () => '/channels',
       providesTags: ['Channels'],
+      onQueryStarted: async (arg, { queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          showErrorToast('loadingError');
+        }
+      },
     }),
     
     getMessages: builder.query({
       query: () => '/messages',
       providesTags: ['Messages'],
+      onQueryStarted: async (arg, { queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          showErrorToast('loadingError');
+        }
+      },
     }),
     
     addChannel: builder.mutation({
@@ -31,6 +46,13 @@ export const chatApi = createApi({
         body: channel,
       }),
       invalidatesTags: ['Channels'],
+      onQueryStarted: async (arg, { queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          showErrorToast('loadingError');
+        }
+      },
     }),
     
     renameChannel: builder.mutation({
@@ -40,6 +62,13 @@ export const chatApi = createApi({
         body: { name },
       }),
       invalidatesTags: ['Channels'],
+      onQueryStarted: async (arg, { queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          showErrorToast('loadingError');
+        }
+      },
     }),
     
     removeChannel: builder.mutation({
@@ -48,6 +77,13 @@ export const chatApi = createApi({
         method: 'DELETE',
       }),
       invalidatesTags: ['Channels', 'Messages'],
+      onQueryStarted: async (arg, { queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          showErrorToast('loadingError');
+        }
+      },
     }),
     
     addMessage: builder.mutation({
@@ -57,6 +93,13 @@ export const chatApi = createApi({
         body: message,
       }),
       invalidatesTags: ['Messages'],
+      onQueryStarted: async (arg, { queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          showErrorToast('loadingError');
+        }
+      },
     }),
   }),
 });

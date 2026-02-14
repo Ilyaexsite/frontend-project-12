@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import { Container, Card, Alert, Spinner } from 'react-bootstrap';
+import { showSuccessToast, showErrorToast } from '../utils/toast';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -35,9 +36,11 @@ const LoginPage = () => {
     const result = await login(values.username, values.password);
     
     if (result.success) {
+      showSuccessToast('loginSuccess');
       navigate('/');
     } else {
       setError(t('auth.errors.invalidCredentials'));
+      showErrorToast('invalidCredentials');
     }
     
     setIsLoading(false);

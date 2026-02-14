@@ -6,6 +6,7 @@ import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useRenameChannelMutation } from '../../../store/api/chatApi';
 import { closeModal } from '../../../store/slices/modalsSlice';
+import { showSuccessToast, showErrorToast } from '../../../utils/toast';
 
 const RenameChannelModal = () => {
   const dispatch = useDispatch();
@@ -33,9 +34,11 @@ const RenameChannelModal = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       await renameChannel({ id: channelId, name: values.name }).unwrap();
+      showSuccessToast('channelRenamed');
       dispatch(closeModal());
     } catch (error) {
       console.error('Failed to rename channel:', error);
+      showErrorToast('loadingError');
     } finally {
       setSubmitting(false);
     }

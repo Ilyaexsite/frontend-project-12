@@ -6,6 +6,7 @@ import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAddChannelMutation } from '../../../store/api/chatApi';
 import { closeModal } from '../../../store/slices/modalsSlice';
+import { showSuccessToast, showErrorToast } from '../../../utils/toast';
 
 const AddChannelModal = () => {
   const dispatch = useDispatch();
@@ -31,9 +32,11 @@ const AddChannelModal = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       await addChannel({ name: values.name }).unwrap();
+      showSuccessToast('channelAdded');
       dispatch(closeModal());
     } catch (error) {
       console.error('Failed to add channel:', error);
+      showErrorToast('loadingError');
     } finally {
       setSubmitting(false);
     }

@@ -11,7 +11,7 @@
     "error": "Error",
     "send": "Send",
     "sending": "Sending...",
-    "confirm": "Confirm"
+    "success": "Success"
   },
   "auth": {
     "login": "Login",
@@ -23,11 +23,8 @@
     "hasAccount": "Already have an account?",
     "loginButton": "Login",
     "signupButton": "Sign Up",
-    "loginLoading": "Logging in...",
-    "signupLoading": "Signing up...",
     "usernamePlaceholder": "3 to 20 characters",
     "passwordPlaceholder": "At least 6 characters",
-    "confirmPasswordPlaceholder": "Repeat password",
     "errors": {
       "usernameRequired": "Required field",
       "usernameLength": "3 to 20 characters",
@@ -35,8 +32,8 @@
       "passwordMin": "At least 6 characters",
       "passwordMatch": "Passwords must match",
       "invalidCredentials": "Invalid username or password",
-      "userExists": "User with this name already exists",
-      "signupError": "Registration error. Please try again."
+      "userExists": "User already exists",
+      "signupError": "Registration error"
     }
   },
   "chat": {
@@ -78,6 +75,27 @@
     "remove": {
       "title": "Remove channel",
       "button": "Remove"
+    }
+  },
+  "toast": {
+    "success": {
+      "channelAdded": "Channel created successfully",
+      "channelRenamed": "Channel renamed successfully",
+      "channelRemoved": "Channel removed successfully",
+      "messageSent": "Message sent",
+      "loginSuccess": "Login successful",
+      "signupSuccess": "Registration successful"
+    },
+    "error": {
+      "networkError": "Network error. Check your connection",
+      "loadingError": "Error loading data",
+      "unknownError": "An unknown error occurred",
+      "connectionLost": "Connection lost. Reconnecting...",
+      "connectionRestored": "Connection restored"
+    },
+    "info": {
+      "connecting": "Connecting to server...",
+      "reconnecting": "Reconnecting..."
     }
   },
   "notFound": {

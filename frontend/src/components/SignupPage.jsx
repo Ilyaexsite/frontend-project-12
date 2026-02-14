@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useSignupMutation } from '../store/api/authApi';
 import { useAuth } from '../contexts/AuthContext';
 import { Container, Card, Alert, Spinner } from 'react-bootstrap';
+import { showSuccessToast, showErrorToast } from '../utils/toast';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -40,13 +41,16 @@ const SignupPage = () => {
       await signup({ username, password }).unwrap();
       
       await login(username, password);
+      showSuccessToast('signupSuccess');
       navigate('/');
     } catch (err) {
       console.error('Signup error:', err);
       if (err.status === 409) {
         setError(t('auth.errors.userExists'));
+        showErrorToast('userExists');
       } else {
         setError(t('auth.errors.signupError'));
+        showErrorToast('signupError');
       }
     } finally {
       setSubmitting(false);

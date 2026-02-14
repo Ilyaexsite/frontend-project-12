@@ -8,6 +8,7 @@ import SignupPage from './components/SignupPage';
 import ChatPage from './components/Chat/ChatPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage from './components/NotFoundPage';
+import ToastContainer from './components/Toast/ToastContainer';
 import { Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -35,6 +36,7 @@ function App() {
               />
               <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
+            <ToastContainer />
           </Suspense>
         </BrowserRouter>
       </AuthProvider>
