@@ -2,17 +2,19 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useSignupMutation } from '../store/api/authApi';
 import { useAuth } from '../contexts/AuthContext';
 import { Container, Card, Alert, Spinner } from 'react-bootstrap';
 
-const LoginPage = () => {
+const SignupPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [signup, { isLoading }] = useSignupMutation();
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const usernameRef = useRef(null);
 
   useEffect(() => {
+    // Автофокус на поле username
     usernameRef.current?.focus();
   }, []);
 
@@ -22,24 +24,33 @@ const LoginPage = () => {
       .max(20, 'От 3 до 20 символов')
       .required('Обязательное поле'),
     password: Yup.string()
-      .min(1, 'Введите пароль')
+      .min(6, 'Не менее 6 символов')
+      .required('Обязательное поле'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')
       .required('Обязательное поле'),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setError('');
-    setIsLoading(true);
     
-    const result = await login(values.username, values.password);
-    
-    if (result.success) {
+    try {
+      const { username, password } = values;
+      const result = await signup({ username, password }).unwrap();
+      
+      // Автоматический вход после успешной регистрации
+      await login(username, password);
       navigate('/');
-    } else {
-      setError('Неверное имя пользователя или пароль');
+    } catch (err) {
+      console.error('Signup error:', err);
+      if (err.status === 409) {
+        setError('Пользователь с таким именем уже существует');
+      } else {
+        setError('Ошибка при регистрации. Попробуйте позже.');
+      }
+    } finally {
+      setSubmitting(false);
     }
-    
-    setIsLoading(false);
-    setSubmitting(false);
   };
 
   return (
@@ -48,7 +59,7 @@ const LoginPage = () => {
         <div className="col-md-6 col-lg-5">
           <Card className="shadow">
             <Card.Body className="p-5">
-              <h2 className="text-center mb-4">Вход в чат</h2>
+              <h2 className="text-center mb-4">Регистрация</h2>
               
               {error && (
                 <Alert variant="danger" className="text-center">
@@ -57,7 +68,11 @@ const LoginPage = () => {
               )}
 
               <Formik
-                initialValues={{ username: '', password: '' }}
+                initialValues={{
+                  username: '',
+                  password: '',
+                  confirmPassword: ''
+                }}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
               >
@@ -72,7 +87,7 @@ const LoginPage = () => {
                         type="text"
                         name="username"
                         className="form-control"
-                        placeholder="Введите имя пользователя"
+                        placeholder="От 3 до 20 символов"
                         disabled={isLoading}
                       />
                       <ErrorMessage name="username">
@@ -82,7 +97,7 @@ const LoginPage = () => {
                       </ErrorMessage>
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-3">
                       <label htmlFor="password" className="form-label">
                         Пароль
                       </label>
@@ -90,10 +105,28 @@ const LoginPage = () => {
                         type="password"
                         name="password"
                         className="form-control"
-                        placeholder="Введите пароль"
+                        placeholder="Не менее 6 символов"
                         disabled={isLoading}
                       />
                       <ErrorMessage name="password">
+                        {msg => (
+                          <div className="text-danger small mt-1">{msg}</div>
+                        )}
+                      </ErrorMessage>
+                    </div>
+
+                    <div className="mb-4">
+                      <label htmlFor="confirmPassword" className="form-label">
+                        Подтвердите пароль
+                      </label>
+                      <Field
+                        type="password"
+                        name="confirmPassword"
+                        className="form-control"
+                        placeholder="Повторите пароль"
+                        disabled={isLoading}
+                      />
+                      <ErrorMessage name="confirmPassword">
                         {msg => (
                           <div className="text-danger small mt-1">{msg}</div>
                         )}
@@ -115,17 +148,17 @@ const LoginPage = () => {
                             aria-hidden="true"
                             className="me-2"
                           />
-                          Вход...
+                          Регистрация...
                         </>
                       ) : (
-                        'Войти'
+                        'Зарегистрироваться'
                       )}
                     </button>
 
                     <div className="text-center">
-                      <span className="text-muted">Нет аккаунта? </span>
-                      <Link to="/signup" className="text-decoration-none">
-                        Зарегистрироваться
+                      <span className="text-muted">Уже есть аккаунт? </span>
+                      <Link to="/login" className="text-decoration-none">
+                        Войти
                       </Link>
                     </div>
                   </Form>
@@ -139,4 +172,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

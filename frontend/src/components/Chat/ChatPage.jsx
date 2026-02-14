@@ -1,24 +1,15 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { useAuth } from '../../contexts/AuthContext';
+import { Container, Row, Col } from 'react-bootstrap';
 import { SocketProvider } from '../../contexts/SocketContext';
+import Header from '../Header';
 import Channels from './Channels';
 import Messages from './Messages';
 import MessageForm from './MessageForm';
 import ModalsContainer from './Modals/ModalsContainer';
 
 const ChatPageContent = () => {
-  const { logout } = useAuth();
-
   return (
     <Container fluid className="vh-100 d-flex flex-column p-0">
-      <Row className="bg-primary text-white py-3 m-0">
-        <Col className="d-flex justify-content-between align-items-center px-4">
-          <h4 className="mb-0">💬 Hexlet Chat</h4>
-          <Button variant="outline-light" size="sm" onClick={logout}>
-            Выйти
-          </Button>
-        </Col>
-      </Row>
+      <Header />
       
       <Row className="flex-grow-1 m-0 bg-light">
         <Col md={3} className="border-end bg-white p-3">
