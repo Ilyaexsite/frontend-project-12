@@ -13,9 +13,9 @@ import ToastContainer from './components/Toast/ToastContainer';
 import { Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// ВАШ ТОКЕН УЖЕ ЗДЕСЬ!
+// ✅ ВОТ СЮДА ВСТАВЛЯЕТСЯ ВАШ КОД ROLLBAR
 const rollbarConfig = {
-  accessToken: 'bee6d9f788ec424f99a7b262ac6ee990',
+  accessToken: '17ea3bff7a674691972bef31b15c7b6f',
   environment: process.env.NODE_ENV || 'production',
   captureUncaught: true,
   captureUnhandledRejections: true,
@@ -30,7 +30,7 @@ const rollbarConfig = {
   }
 };
 
-// Компонент для отображения при ошибке
+// Компонент для отображения при ошибке (fallback UI)
 const ErrorFallback = ({ error, resetError }) => (
   <div className="text-center mt-5 p-5">
     <h2 className="text-danger mb-4">Что-то пошло не так</h2>
@@ -54,6 +54,7 @@ const ErrorFallback = ({ error, resetError }) => (
 
 function App() {
   return (
+    // ✅ ВОТ ЗДЕСЬ ОБОРАЧИВАЕМ ВСЁ ПРИЛОЖЕНИЕ В ROLLBAR PROVIDER
     <RollbarProvider config={rollbarConfig}>
       <RollbarErrorBoundary fallbackUI={ErrorFallback}>
         <Provider store={store}>
