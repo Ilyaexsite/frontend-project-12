@@ -1,7 +1,6 @@
-.PHONY: install build start test
+.PHONY: install build start
 
 install:
-	npm install
 	cd frontend && npm install
 
 build:
@@ -9,6 +8,3 @@ build:
 
 start:
 	node server.js
-
-test:
-	npm test

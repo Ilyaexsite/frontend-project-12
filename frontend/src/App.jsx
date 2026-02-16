@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
-// Минимальный компонент для тестов
+// Простой хедер
 const Header = () => (
-  <nav style={{ backgroundColor: 'blue', padding: '10px' }}>
-    <Link to="/" style={{ color: 'white', textDecoration: 'none', fontSize: '20px' }}>
+  <nav style={{ backgroundColor: '#0d6efd', padding: '1rem' }}>
+    <Link to="/" style={{ color: 'white', textDecoration: 'none', fontSize: '1.25rem' }}>
       💬 Hexlet Chat
     </Link>
   </nav>
 );
 
+// Страница логина
 const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,28 +18,29 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
-      <h2>Вход</h2>
+    <div style={{ maxWidth: '400px', margin: '2rem auto', padding: '1rem' }}>
+      <h2 style={{ textAlign: 'center' }}>Вход</h2>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{ marginBottom: '1rem' }}>
           <label>Ваш ник</label><br />
-          <input type="text" name="username" style={{ width: '100%', padding: '5px' }} />
+          <input type="text" name="username" style={{ width: '100%', padding: '0.5rem' }} />
         </div>
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{ marginBottom: '1rem' }}>
           <label>Пароль</label><br />
-          <input type="password" name="password" style={{ width: '100%', padding: '5px' }} />
+          <input type="password" name="password" style={{ width: '100%', padding: '0.5rem' }} />
         </div>
-        <button type="submit" style={{ width: '100%', padding: '10px', background: 'blue', color: 'white' }}>
+        <button type="submit" style={{ width: '100%', padding: '0.5rem', background: '#0d6efd', color: 'white' }}>
           Войти
         </button>
       </form>
-      <p style={{ textAlign: 'center', marginTop: '10px' }}>
-        <a href="/signup">Регистрация</a>
+      <p style={{ textAlign: 'center' }}>
+        <Link to="/signup">Регистрация</Link>
       </p>
     </div>
   );
 };
 
+// Страница регистрации
 const SignupPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,49 +48,39 @@ const SignupPage = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
-      <h2>Регистрация</h2>
+    <div style={{ maxWidth: '400px', margin: '2rem auto', padding: '1rem' }}>
+      <h2 style={{ textAlign: 'center' }}>Регистрация</h2>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{ marginBottom: '1rem' }}>
           <label>Ваш ник</label><br />
-          <input type="text" name="username" style={{ width: '100%', padding: '5px' }} />
+          <input type="text" name="username" style={{ width: '100%', padding: '0.5rem' }} />
         </div>
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{ marginBottom: '1rem' }}>
           <label>Пароль</label><br />
-          <input type="password" name="password" style={{ width: '100%', padding: '5px' }} />
+          <input type="password" name="password" style={{ width: '100%', padding: '0.5rem' }} />
         </div>
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{ marginBottom: '1rem' }}>
           <label>Подтвердите пароль</label><br />
-          <input type="password" name="confirmPassword" style={{ width: '100%', padding: '5px' }} />
+          <input type="password" name="confirmPassword" style={{ width: '100%', padding: '0.5rem' }} />
         </div>
-        <button type="submit" style={{ width: '100%', padding: '10px', background: 'blue', color: 'white' }}>
+        <button type="submit" style={{ width: '100%', padding: '0.5rem', background: '#0d6efd', color: 'white' }}>
           Зарегистрироваться
         </button>
       </form>
-      <p style={{ textAlign: 'center', marginTop: '10px' }}>
-        <a href="/login">Вход</a>
+      <p style={{ textAlign: 'center' }}>
+        <Link to="/login">Вход</Link>
       </p>
     </div>
   );
 };
 
-const ChatPage = () => (
-  <div>
+// Главная страница
+const HomePage = () => (
+  <>
     <Header />
-    <div style={{ padding: '20px' }}>
-      <h2>Добро пожаловать в чат!</h2>
-    </div>
-  </div>
+    <LoginPage />
+  </>
 );
-
-const HomePage = () => {
-  return (
-    <div>
-      <Header />
-      <LoginPage />
-    </div>
-  );
-};
 
 function App() {
   return (
@@ -97,7 +89,6 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<HomePage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/chat" element={<ChatPage />} />
       </Routes>
     </BrowserRouter>
   );
