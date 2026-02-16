@@ -4,48 +4,33 @@ import { Button, Alert } from 'react-bootstrap';
 const TestRollbar = () => {
   const rollbar = useRollbar();
 
-  const testError = () => {
+  const sendTestError = () => {
     try {
       // Генерируем тестовую ошибку
       throw new Error('🧪 Тестовая ошибка для Rollbar');
     } catch (error) {
       // Отправляем в Rollbar
       rollbar.error('Тестовая ошибка из React', error);
-      alert('Ошибка отправлена в Rollbar! Проверьте дашборд.');
+      alert('✅ Ошибка отправлена в Rollbar! Страница обновится через 5 секунд...');
+      
+      // Перенаправляем на дашборд Rollbar через 5 секунд
+      setTimeout(() => {
+        window.open('https://rollbar.com', '_blank');
+      }, 5000);
     }
-  };
-
-  const testUnhandledError = () => {
-    // Необработанная ошибка (будет поймана глобально)
-    setTimeout(() => {
-      throw new Error('🔥 Необработанная ошибка для Rollbar');
-    }, 100);
-  };
-
-  const testRejection = () => {
-    // Необработанный reject промиса
-    Promise.reject(new Error('💥 Необработанный reject для Rollbar'));
   };
 
   return (
     <Alert variant="info" className="mt-3">
       <Alert.Heading>🧪 Тестирование Rollbar</Alert.Heading>
       <p className="mb-2">
-        Токен: <code>{rollbar?.client?.accessToken || 'загружается...'}</code>
+        Токен: <code>{rollbar?.client?.accessToken || '17ea3bff7a67...'}</code>
       </p>
-      <div className="d-flex gap-2 flex-wrap">
-        <Button variant="warning" size="sm" onClick={testError}>
-          Отправить тестовую ошибку
-        </Button>
-        <Button variant="danger" size="sm" onClick={testUnhandledError}>
-          Необработанная ошибка
-        </Button>
-        <Button variant="info" size="sm" onClick={testRejection}>
-          Необработанный reject
-        </Button>
-      </div>
+      <Button variant="warning" onClick={sendTestError}>
+        🔥 Отправить тестовую ошибку в Rollbar
+      </Button>
       <p className="mt-2 mb-0 small text-muted">
-        Статус: <strong>{process.env.NODE_ENV === 'production' ? '✅ Активен' : '⚠️ Только в продакшене'}</strong>
+        Нажмите кнопку, чтобы активировать интеграцию
       </p>
     </Alert>
   );

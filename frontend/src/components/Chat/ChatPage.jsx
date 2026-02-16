@@ -9,6 +9,8 @@ import MessageForm from './MessageForm';
 import ModalsContainer from './Modals/ModalsContainer';
 import TestError from '../TestError'; // Добавлено для Rollbar
 import RollbarInfo from '../RollbarInfo'; // Добавлено для Rollbar
+import TestRollbar from '../TestRollbar';
+
 
 const ChatPageContent = () => {
   const { isOnline } = useNetworkStatus();
@@ -27,7 +29,9 @@ const ChatPageContent = () => {
           </Col>
         </Row>
       )}
-      
+      <div className="container mt-3">
+  <TestRollbar />
+</div>
       {!isOnline && (
         <Alert variant="warning" className="text-center m-0 rounded-0">
           {t('toast.error.connectionLost')}
