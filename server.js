@@ -205,6 +205,89 @@ io.on('connection', (socket) => {
   });
 });
 
+// --- ТЕСТОВЫЕ ЭНДПОИНТЫ ДЛЯ ROLLBAR ---
+// (добавлено для тестирования ошибок)
+
+// Тестовый эндпоинт для ошибок
+app.get('/api/v1/test-error', (req, res) => {
+  console.log('🔥 Тестовый эндпоинт ошибки вызван');
+  
+  const { type = 'server' } = req.query;
+  
+  try {
+    switch(type) {
+      case 'server':
+        throw new Error('🔥 Тестовая ошибка на сервере для Rollbar');
+        
+      case 'database':
+        const dbError = new Error('Database connection failed');
+        dbError.code = 'ECONNREFUSED';
+        dbError.statusCode = 503;
+        throw dbError;
+        
+      case 'validation':
+        return res.status(400).json({ 
+          error: 'Validation failed',
+          details: { field: 'username', message: 'Username is required' }
+        });
+        
+      case 'async':
+        setTimeout(() => {
+          throw new Error('🔥 Асинхронная ошибка на сервере');
+        }, 100);
+        return res.json({ message: 'Асинхронная ошибка запущена' });
+        
+      default:
+        return res.status(400).json({ error: 'Unknown error type' });
+    }
+  } catch (error) {
+    console.error('Test error caught:', error);
+    res.status(500).json({ 
+      error: 'Internal Server Error',
+      message: error.message,
+      type: error.name
+    });
+  }
+});
+
+// Тестовый эндпоинт для проверки Rollbar
+app.get('/api/v1/rollbar-test', (req, res) => {
+  res.json({ 
+    message: 'Rollbar test endpoint',
+    instructions: {
+      client: 'Нажмите кнопки в интерфейсе для тестирования клиентских ошибок',
+      server: 'Используйте /api/v1/test-error?type=server для тестирования серверных ошибок'
+    }
+  });
+});
+
+// --- Глобальный обработчик ошибок ---
+app.use((err, req, res, next) => {
+  console.error('🔥 Global error handler:', err);
+  
+  console.error({
+    message: err.message,
+    stack: err.stack,
+    url: req.url,
+    method: req.method,
+    ip: req.ip,
+    timestamp: new Date().toISOString()
+  });
+  
+  const statusCode = err.statusCode || 500;
+  const errorResponse = {
+    error: err.message || 'Internal Server Error',
+    status: statusCode,
+    timestamp: new Date().toISOString()
+  };
+  
+  if (process.env.NODE_ENV === 'development') {
+    errorResponse.stack = err.stack;
+  }
+  
+  res.status(statusCode).json(errorResponse);
+});
+
 // --- Обработчик для React Router ---
 app.use((req, res) => {
   if (req.path.startsWith('/api')) {
@@ -220,4 +303,10 @@ server.listen(port, () => {
   console.log(`📊 Channels: ${channels.length}`);
   console.log(`💬 Messages: ${messages.length}`);
   console.log(`👥 Registered users: ${users.map(u => u.username).join(', ')}`);
+  console.log(`🔧 Test endpoints:`);
+  console.log(`   - GET /api/v1/test-error?type=server`);
+  console.log(`   - GET /api/v1/test-error?type=database`);
+  console.log(`   - GET /api/v1/test-error?type=validation`);
+  console.log(`   - GET /api/v1/test-error?type=async`);
+  console.log(`   - GET /api/v1/rollbar-test`);
 });

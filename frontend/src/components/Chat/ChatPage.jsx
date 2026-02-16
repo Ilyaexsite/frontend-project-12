@@ -1,12 +1,14 @@
 import { Container, Row, Col, Alert } from 'react-bootstrap';
 import { SocketProvider } from '../../contexts/SocketContext';
 import { useNetworkStatus } from '../../hooks/useNetworkStatus';
+import { useTranslation } from 'react-i18next';
 import Header from '../Header';
 import Channels from './Channels';
 import Messages from './Messages';
 import MessageForm from './MessageForm';
 import ModalsContainer from './Modals/ModalsContainer';
-import { useTranslation } from 'react-i18next';
+import TestError from '../TestError'; // Добавлено для Rollbar
+import RollbarInfo from '../RollbarInfo'; // Добавлено для Rollbar
 
 const ChatPageContent = () => {
   const { isOnline } = useNetworkStatus();
@@ -15,6 +17,16 @@ const ChatPageContent = () => {
   return (
     <Container fluid className="vh-100 d-flex flex-column p-0">
       <Header />
+      
+      {/* Блок для тестирования Rollbar (только в разработке) */}
+      {process.env.NODE_ENV === 'development' && (
+        <Row className="m-0 p-3 bg-light border-bottom">
+          <Col>
+            <TestError />
+            <RollbarInfo />
+          </Col>
+        </Row>
+      )}
       
       {!isOnline && (
         <Alert variant="warning" className="text-center m-0 rounded-0">
