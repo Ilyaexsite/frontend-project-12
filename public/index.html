@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexlet Chat</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; }
+        .navbar { background-color: #0d6efd; padding: 1rem; }
+        .navbar a { color: white; text-decoration: none; font-size: 1.25rem; }
+        .container { max-width: 400px; margin: 2rem auto; padding: 1rem; }
+        h2 { text-align: center; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.25rem; }
+        input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+        button { 
+            width: 100%; padding: 0.5rem; 
+            background-color: #0d6efd; color: white; 
+            border: none; border-radius: 4px; 
+            cursor: pointer;
+        }
+        .link { text-align: center; margin-top: 1rem; }
+        .link a { color: #0d6efd; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">💬 Hexlet Chat</a>
+    </div>
+
+    <div class="container" id="content">
+        <!-- Содержимое будет вставлено через JavaScript -->
+    </div>
+
+    <script>
+        // Простая маршрутизация
+        const routes = {
+            '/': {
+                title: 'Вход',
+                form: `
+                    <h2>Вход</h2>
+                    <form id="authForm">
+                        <div class="form-group">
+                            <label for="username">Ваш ник</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit">Войти</button>
+                    </form>
+                    <div class="link">
+                        <a href="/signup">Регистрация</a>
+                    </div>
+                `,
+                handler: () => {
+                    document.getElementById('authForm')?.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        window.location.href = '/';
+                    });
+                }
+            },
+            '/signup': {
+                title: 'Регистрация',
+                form: `
+                    <h2>Регистрация</h2>
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label for="username">Ваш ник</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Подтвердите пароль</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <button type="submit">Зарегистрироваться</button>
+                    </form>
+                    <div class="link">
+                        <a href="/login">Вход</a>
+                    </div>
+                `,
+                handler: () => {
+                    document.getElementById('signupForm')?.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        window.location.href = '/';
+                    });
+                }
+            }
+        };
+
+        function render() {
+            const path = window.location.pathname;
+            const route = routes[path] || routes['/'];
+            
+            document.getElementById('content').innerHTML = route.form;
+            route.handler?.();
+        }
+
+        // Обработка кликов по ссылкам
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('/')) {
+                e.preventDefault();
+                const href = e.target.getAttribute('href');
+                history.pushState(null, '', href);
+                render();
+            }
+        });
+
+        window.addEventListener('popstate', render);
+        render();
+    </script>
+</body>
+</html>
