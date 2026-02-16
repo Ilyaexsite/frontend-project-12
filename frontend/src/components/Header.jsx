@@ -17,7 +17,7 @@ const Header = () => {
     <Navbar bg="primary" variant="dark" expand="lg" className="px-3">
       <Container fluid>
         <Navbar.Brand as={Link} to="/" className="text-white">
-          💬 {t('common.appName')}
+          💬 Hexlet Chat  {}
         </Navbar.Brand>
         {isAuthenticated && (
           <Button
