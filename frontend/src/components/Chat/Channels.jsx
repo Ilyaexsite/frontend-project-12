@@ -3,7 +3,7 @@ import { useGetChannelsQuery } from '../../store/api/chatApi';
 import { setCurrentChannel } from '../../store/slices/channelsSlice';
 import { openModal } from '../../store/slices/modalsSlice';
 import ChannelMenu from './ChannelMenu';
-import { Spinner, Alert, ListGroup, Button } from 'react-bootstrap';
+import { Spinner, Alert, ListGroup, Button, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const Channels = () => {
@@ -42,8 +42,9 @@ const Channels = () => {
           size="sm"
           onClick={handleAddChannel}
           title={t('channels.addChannel')}
+          aria-label={t('channels.addChannel')}
         >
-          +
+          {t('channels.addChannel')}
         </Button>
       </div>
       
@@ -59,7 +60,30 @@ const Channels = () => {
             <span className="text-truncate">
               # {channel.name}
             </span>
-            <ChannelMenu channel={channel} />
+            {channel.removable && (
+              <Dropdown onClick={(e) => e.stopPropagation()}>
+                <Dropdown.Toggle
+                  variant="link"
+                  size="sm"
+                  className="text-decoration-none p-0 text-muted"
+                  title={t('common.channelManagement')}
+                >
+                  ⋮
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => dispatch(openModal({ type: 'renaming', channelId: channel.id }))}>
+                    {t('channels.renameChannel')}
+                  </Dropdown.Item>
+                  <Dropdown.Item 
+                    onClick={() => dispatch(openModal({ type: 'removing', channelId: channel.id }))}
+                    className="text-danger"
+                  >
+                    {t('channels.removeChannel')}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
           </ListGroup.Item>
         ))}
       </ListGroup>

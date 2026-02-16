@@ -36,7 +36,6 @@ const RenameChannelModal = () => {
   }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    // Дополнительная проверка перед отправкой
     if (hasProfanity(values.name)) {
       const cleanedName = cleanProfanity(values.name);
       showWarningToast(t('profanity.channelNameCleaned'));
@@ -59,20 +58,6 @@ const RenameChannelModal = () => {
     dispatch(closeModal());
   };
 
-  const handleNameChange = (e, setFieldValue) => {
-    const value = e.target.value;
-    setFieldValue('name', value, true);
-  };
-
-  const handleNameBlur = (e, setFieldValue) => {
-    const value = e.target.value;
-    if (hasProfanity(value)) {
-      const cleaned = cleanProfanity(value);
-      setFieldValue('name', cleaned, true);
-      showWarningToast(t('profanity.channelNameCleaned'));
-    }
-  };
-
   if (!currentChannel) return null;
 
   return (
@@ -87,7 +72,7 @@ const RenameChannelModal = () => {
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ isSubmitting, isValid, setFieldValue }) => (
+        {({ isSubmitting, isValid }) => (
           <Form>
             <Modal.Body>
               <BootstrapForm.Group>
@@ -100,8 +85,6 @@ const RenameChannelModal = () => {
                   name="name"
                   className="form-control"
                   disabled={isLoading}
-                  onChange={(e) => handleNameChange(e, setFieldValue)}
-                  onBlur={(e) => handleNameBlur(e, setFieldValue)}
                 />
                 <ErrorMessage name="name">
                   {(msg) => (

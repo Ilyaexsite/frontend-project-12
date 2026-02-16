@@ -3,40 +3,32 @@
     "appName": "Hexlet Chat",
     "logout": "Выйти",
     "cancel": "Отмена",
-    "save": "Сохранить",
-    "add": "Добавить",
+    "send": "Отправить",
+    "add": "+",
     "rename": "Переименовать",
     "delete": "Удалить",
-    "loading": "Загрузка...",
-    "error": "Ошибка",
-    "send": "Отправить",
-    "sending": "Отправка...",
-    "success": "Успешно"
+    "channelManagement": "Управление каналом"
   },
   "auth": {
-    "login": "Вход",
-    "signup": "Регистрация",
-    "username": "Имя пользователя",
+    "username": "Ваш ник",
+    "nickname": "Ваш ник",
     "password": "Пароль",
     "confirmPassword": "Подтвердите пароль",
+    "login": "Войти",
+    "signup": "Регистрация",
+    "register": "Зарегистрироваться",
     "noAccount": "Нет аккаунта?",
     "hasAccount": "Уже есть аккаунт?",
-    "loginButton": "Войти",
-    "signupButton": "Зарегистрироваться",
     "usernamePlaceholder": "От 3 до 20 символов",
     "passwordPlaceholder": "Не менее 6 символов",
-    "confirmPasswordPlaceholder": "Повторите пароль",
-    "loginLoading": "Вход...",
-    "signupLoading": "Регистрация...",
     "errors": {
       "usernameRequired": "Обязательное поле",
       "usernameLength": "От 3 до 20 символов",
       "passwordRequired": "Обязательное поле",
       "passwordMin": "Не менее 6 символов",
       "passwordMatch": "Пароли должны совпадать",
-      "invalidCredentials": "Неверное имя пользователя или пароль",
-      "userExists": "Пользователь с таким именем уже существует",
-      "signupError": "Ошибка при регистрации"
+      "invalidCredentials": "Неверные имя пользователя или пароль",
+      "userExists": "Пользователь с таким именем уже существует"
     }
   },
   "chat": {
@@ -50,26 +42,30 @@
     "loadingMessages": "Загрузка сообщений...",
     "errorLoadingChannels": "Ошибка загрузки каналов",
     "errorLoadingMessages": "Ошибка загрузки сообщений",
-    "newMessage": "Новое сообщение"
+    "newMessage": "Новое сообщение",
+    "networkError": "Ошибка соединения"
   },
   "channels": {
-    "addChannel": "Добавить канал",
-    "renameChannel": "Переименовать канал",
-    "removeChannel": "Удалить канал",
+    "addChannel": "+",
+    "renameChannel": "Переименовать",
+    "removeChannel": "Удалить",
     "channelName": "Имя канала",
-    "channelNamePlaceholder": "Например: general",
+    "channelNamePlaceholder": "Имя канала",
     "errors": {
       "nameRequired": "Обязательное поле",
       "nameLength": "От 3 до 20 символов",
       "nameExists": "Канал с таким именем уже существует"
     },
     "removeConfirm": "Вы уверены, что хотите удалить канал",
-    "removeWarning": "Все сообщения в этом канале будут удалены."
+    "removeWarning": "Все сообщения в этом канале будут удалены.",
+    "created": "Канал создан",
+    "renamed": "Канал переименован",
+    "deleted": "Канал удалён"
   },
   "modals": {
     "add": {
       "title": "Добавить канал",
-      "button": "Добавить"
+      "button": "+"
     },
     "rename": {
       "title": "Переименовать канал",
@@ -82,38 +78,18 @@
   },
   "toast": {
     "success": {
-      "channelAdded": "Канал успешно создан",
-      "channelRenamed": "Канал успешно переименован",
-      "channelRemoved": "Канал успешно удален",
-      "messageSent": "Сообщение отправлено",
+      "channelAdded": "Канал создан",
+      "channelRenamed": "Канал переименован",
+      "channelRemoved": "Канал удалён",
       "loginSuccess": "Вход выполнен успешно",
       "signupSuccess": "Регистрация выполнена успешно"
     },
     "error": {
-      "networkError": "Ошибка сети. Проверьте подключение",
+      "networkError": "Ошибка соединения",
       "loadingError": "Ошибка загрузки данных",
       "unknownError": "Произошла неизвестная ошибка",
       "connectionLost": "Соединение потеряно. Попытка переподключения...",
       "connectionRestored": "Соединение восстановлено"
-    },
-    "info": {
-      "connecting": "Подключение к серверу...",
-      "reconnecting": "Переподключение..."
-    },
-    "warning": {
-      "default": "Предупреждение"
     }
-  },
-  "profanity": {
-    "messageWarning": "Сообщение содержит нецензурные слова",
-    "messageCleaned": "Сообщение было очищено от нецензурных слов",
-    "channelNameWarning": "Название канала содержит нецензурные слова",
-    "channelNameCleaned": "Название канала было очищено от нецензурных слов"
-  },
-  "notFound": {
-    "title": "404",
-    "message": "Страница не найдена",
-    "description": "Извините, запрашиваемая страница не существует.",
-    "backHome": "Вернуться на главную"
   }
 }

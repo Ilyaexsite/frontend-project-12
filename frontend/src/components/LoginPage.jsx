@@ -123,14 +123,14 @@ const LoginPage = () => {
                           {t('auth.loginLoading')}
                         </>
                       ) : (
-                        t('auth.loginButton')
+                        t('auth.login')
                       )}
                     </button>
 
                     <div className="text-center">
                       <span className="text-muted">{t('auth.noAccount')} </span>
                       <Link to="/signup" className="text-decoration-none">
-                        {t('auth.signupButton')}
+                        {t('auth.signup')}
                       </Link>
                     </div>
                   </Form>

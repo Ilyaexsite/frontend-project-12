@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/Ilyaexsite/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Ilyaexsite/frontend-project-12/actions)",
   "scripts": {
-    "build": "cd frontend && npm run build",
-    "start": "npx start-server -s ./frontend/dist",
+    "build": "make build",
+    "start": "make start",
     "dev": "concurrently \"npx start-server -p 5001\" \"cd frontend && npm run dev\"",
-    "install-all": "npm install && cd frontend && npm install",
+    "install-all": "make install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

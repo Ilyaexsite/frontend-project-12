@@ -16,16 +16,6 @@ const AddChannelModal = () => {
   const channels = useSelector((state) => state.channels.items);
   const inputRef = useRef(null);
 
-  // Кастомная валидация для проверки нецензурных слов
-  const validateChannelName = (value) => {
-    if (!value) return null;
-    
-    if (hasProfanity(value)) {
-      return 'Название канала содержит нецензурные слова';
-    }
-    return null;
-  };
-
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(3, t('channels.errors.nameLength'))
@@ -34,7 +24,7 @@ const AddChannelModal = () => {
       .test('unique', t('channels.errors.nameExists'), (value) => {
         return !channels.some((ch) => ch.name === value);
       })
-      .test('profanity', 'Название канала содержит нецензурные слова', (value) => {
+      .test('profanity', t('profanity.channelNameWarning'), (value) => {
         return !hasProfanity(value);
       }),
   });
@@ -44,10 +34,9 @@ const AddChannelModal = () => {
   }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    // Дополнительная проверка перед отправкой
     if (hasProfanity(values.name)) {
       const cleanedName = cleanProfanity(values.name);
-      showWarningToast('Название канала было очищено от нецензурных слов');
+      showWarningToast(t('profanity.channelNameCleaned'));
       values.name = cleanedName;
     }
 
@@ -67,20 +56,6 @@ const AddChannelModal = () => {
     dispatch(closeModal());
   };
 
-  const handleNameChange = (e, setFieldValue) => {
-    const value = e.target.value;
-    setFieldValue('name', value, true);
-  };
-
-  const handleNameBlur = (e, setFieldValue) => {
-    const value = e.target.value;
-    if (hasProfanity(value)) {
-      const cleaned = cleanProfanity(value);
-      setFieldValue('name', cleaned, true);
-      showWarningToast('Название канала было очищено от нецензурных слов');
-    }
-  };
-
   return (
     <Modal show centered onHide={handleClose}>
       <Modal.Header closeButton>
@@ -92,7 +67,7 @@ const AddChannelModal = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, isValid, setFieldValue }) => (
+        {({ isSubmitting, isValid }) => (
           <Form>
             <Modal.Body>
               <BootstrapForm.Group>
@@ -106,8 +81,6 @@ const AddChannelModal = () => {
                   className="form-control"
                   placeholder={t('channels.channelNamePlaceholder')}
                   disabled={isLoading}
-                  onChange={(e) => handleNameChange(e, setFieldValue)}
-                  onBlur={(e) => handleNameBlur(e, setFieldValue)}
                 />
                 <ErrorMessage name="name">
                   {(msg) => (
