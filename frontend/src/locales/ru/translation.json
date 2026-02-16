@@ -25,6 +25,9 @@
     "signupButton": "Зарегистрироваться",
     "usernamePlaceholder": "От 3 до 20 символов",
     "passwordPlaceholder": "Не менее 6 символов",
+    "confirmPasswordPlaceholder": "Повторите пароль",
+    "loginLoading": "Вход...",
+    "signupLoading": "Регистрация...",
     "errors": {
       "usernameRequired": "Обязательное поле",
       "usernameLength": "От 3 до 20 символов",
@@ -96,7 +99,16 @@
     "info": {
       "connecting": "Подключение к серверу...",
       "reconnecting": "Переподключение..."
+    },
+    "warning": {
+      "default": "Предупреждение"
     }
+  },
+  "profanity": {
+    "messageWarning": "Сообщение содержит нецензурные слова",
+    "messageCleaned": "Сообщение было очищено от нецензурных слов",
+    "channelNameWarning": "Название канала содержит нецензурные слова",
+    "channelNameCleaned": "Название канала было очищено от нецензурных слов"
   },
   "notFound": {
     "title": "404",

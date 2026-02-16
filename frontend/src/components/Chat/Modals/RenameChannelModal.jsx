@@ -6,7 +6,8 @@ import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useRenameChannelMutation } from '../../../store/api/chatApi';
 import { closeModal } from '../../../store/slices/modalsSlice';
-import { showSuccessToast, showErrorToast } from '../../../utils/toast';
+import { showSuccessToast, showErrorToast, showWarningToast } from '../../../utils/toast';
+import { cleanProfanity, hasProfanity } from '../../../utils/profanityFilter';
 
 const RenameChannelModal = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,9 @@ const RenameChannelModal = () => {
       .required(t('channels.errors.nameRequired'))
       .test('unique', t('channels.errors.nameExists'), (value) => {
         return !channels.some((ch) => ch.name === value && ch.id !== channelId);
+      })
+      .test('profanity', t('profanity.channelNameWarning'), (value) => {
+        return !hasProfanity(value);
       }),
   });
 
@@ -32,6 +36,13 @@ const RenameChannelModal = () => {
   }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    // Дополнительная проверка перед отправкой
+    if (hasProfanity(values.name)) {
+      const cleanedName = cleanProfanity(values.name);
+      showWarningToast(t('profanity.channelNameCleaned'));
+      values.name = cleanedName;
+    }
+
     try {
       await renameChannel({ id: channelId, name: values.name }).unwrap();
       showSuccessToast('channelRenamed');
@@ -48,6 +59,20 @@ const RenameChannelModal = () => {
     dispatch(closeModal());
   };
 
+  const handleNameChange = (e, setFieldValue) => {
+    const value = e.target.value;
+    setFieldValue('name', value, true);
+  };
+
+  const handleNameBlur = (e, setFieldValue) => {
+    const value = e.target.value;
+    if (hasProfanity(value)) {
+      const cleaned = cleanProfanity(value);
+      setFieldValue('name', cleaned, true);
+      showWarningToast(t('profanity.channelNameCleaned'));
+    }
+  };
+
   if (!currentChannel) return null;
 
   return (
@@ -62,7 +87,7 @@ const RenameChannelModal = () => {
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ isSubmitting, isValid }) => (
+        {({ isSubmitting, isValid, setFieldValue }) => (
           <Form>
             <Modal.Body>
               <BootstrapForm.Group>
@@ -75,6 +100,8 @@ const RenameChannelModal = () => {
                   name="name"
                   className="form-control"
                   disabled={isLoading}
+                  onChange={(e) => handleNameChange(e, setFieldValue)}
+                  onBlur={(e) => handleNameBlur(e, setFieldValue)}
                 />
                 <ErrorMessage name="name">
                   {(msg) => (

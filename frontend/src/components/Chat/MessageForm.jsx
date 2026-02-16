@@ -4,6 +4,8 @@ import { useAddMessageMutation } from '../../store/api/chatApi';
 import { useAuth } from '../../contexts/AuthContext';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { cleanProfanity, hasProfanity } from '../../utils/profanityFilter';
+import { showWarningToast } from '../../utils/toast';
 
 const MessageForm = () => {
   const [message, setMessage] = useState('');
@@ -14,11 +16,22 @@ const MessageForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!message.trim() || !currentChannelId) return;
+    const trimmedMessage = message.trim();
+    
+    if (!trimmedMessage || !currentChannelId) return;
+
+    // Проверка на нецензурные слова
+    if (hasProfanity(trimmedMessage)) {
+      showWarningToast(t('profanity.messageWarning'));
+      // Очищаем сообщение от нецензурных слов
+      const cleanedMessage = cleanProfanity(trimmedMessage);
+      setMessage(cleanedMessage);
+      return;
+    }
 
     try {
       await addMessage({
-        body: message.trim(),
+        body: trimmedMessage,
         channelId: currentChannelId,
         username: user?.username || 'Anonymous',
       }).unwrap();
@@ -28,13 +41,28 @@ const MessageForm = () => {
     }
   };
 
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setMessage(value);
+  };
+
+  const handleBlur = () => {
+    // При потере фокуса проверяем и очищаем
+    if (hasProfanity(message)) {
+      const cleaned = cleanProfanity(message);
+      setMessage(cleaned);
+      showWarningToast(t('profanity.messageCleaned'));
+    }
+  };
+
   return (
     <Form onSubmit={handleSubmit} className="mt-3">
       <InputGroup>
         <Form.Control
           type="text"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleChange}
+          onBlur={handleBlur}
           placeholder={currentChannelId ? t('chat.messagePlaceholder') : t('chat.selectChannel')}
           disabled={isLoading || !currentChannelId}
           maxLength={500}

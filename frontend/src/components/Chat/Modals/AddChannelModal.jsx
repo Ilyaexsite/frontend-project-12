@@ -6,7 +6,8 @@ import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAddChannelMutation } from '../../../store/api/chatApi';
 import { closeModal } from '../../../store/slices/modalsSlice';
-import { showSuccessToast, showErrorToast } from '../../../utils/toast';
+import { showSuccessToast, showErrorToast, showWarningToast } from '../../../utils/toast';
+import { cleanProfanity, hasProfanity } from '../../../utils/profanityFilter';
 
 const AddChannelModal = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,16 @@ const AddChannelModal = () => {
   const channels = useSelector((state) => state.channels.items);
   const inputRef = useRef(null);
 
+  // Кастомная валидация для проверки нецензурных слов
+  const validateChannelName = (value) => {
+    if (!value) return null;
+    
+    if (hasProfanity(value)) {
+      return 'Название канала содержит нецензурные слова';
+    }
+    return null;
+  };
+
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(3, t('channels.errors.nameLength'))
@@ -22,6 +33,9 @@ const AddChannelModal = () => {
       .required(t('channels.errors.nameRequired'))
       .test('unique', t('channels.errors.nameExists'), (value) => {
         return !channels.some((ch) => ch.name === value);
+      })
+      .test('profanity', 'Название канала содержит нецензурные слова', (value) => {
+        return !hasProfanity(value);
       }),
   });
 
@@ -30,6 +44,13 @@ const AddChannelModal = () => {
   }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    // Дополнительная проверка перед отправкой
+    if (hasProfanity(values.name)) {
+      const cleanedName = cleanProfanity(values.name);
+      showWarningToast('Название канала было очищено от нецензурных слов');
+      values.name = cleanedName;
+    }
+
     try {
       await addChannel({ name: values.name }).unwrap();
       showSuccessToast('channelAdded');
@@ -46,6 +67,20 @@ const AddChannelModal = () => {
     dispatch(closeModal());
   };
 
+  const handleNameChange = (e, setFieldValue) => {
+    const value = e.target.value;
+    setFieldValue('name', value, true);
+  };
+
+  const handleNameBlur = (e, setFieldValue) => {
+    const value = e.target.value;
+    if (hasProfanity(value)) {
+      const cleaned = cleanProfanity(value);
+      setFieldValue('name', cleaned, true);
+      showWarningToast('Название канала было очищено от нецензурных слов');
+    }
+  };
+
   return (
     <Modal show centered onHide={handleClose}>
       <Modal.Header closeButton>
@@ -57,7 +92,7 @@ const AddChannelModal = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, isValid }) => (
+        {({ isSubmitting, isValid, setFieldValue }) => (
           <Form>
             <Modal.Body>
               <BootstrapForm.Group>
@@ -71,6 +106,8 @@ const AddChannelModal = () => {
                   className="form-control"
                   placeholder={t('channels.channelNamePlaceholder')}
                   disabled={isLoading}
+                  onChange={(e) => handleNameChange(e, setFieldValue)}
+                  onBlur={(e) => handleNameBlur(e, setFieldValue)}
                 />
                 <ErrorMessage name="name">
                   {(msg) => (
