@@ -20,6 +20,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/404" element={<NotFoundPage />} />
+            <Route path="/debug" element={<DebugPage />} />
             <Route
               path="/"
               element={
