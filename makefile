@@ -1,7 +1,6 @@
 .PHONY: install build start test
 
 install:
-	npm install
 	cd frontend && npm install
 
 build:
