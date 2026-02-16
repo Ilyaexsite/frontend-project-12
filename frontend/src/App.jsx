@@ -11,10 +11,26 @@ import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage from './components/NotFoundPage';
 import ToastContainer from './components/Toast/ToastContainer';
 import { Spinner } from 'react-bootstrap';
-import rollbarConfig from './rollbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Компонент для отображения fallback UI при ошибке
+// ВАШ ТОКЕН УЖЕ ЗДЕСЬ!
+const rollbarConfig = {
+  accessToken: 'bee6d9f788ec424f99a7b262ac6ee990',
+  environment: process.env.NODE_ENV || 'production',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+  enabled: process.env.NODE_ENV === 'production', // Только в продакшене
+  payload: {
+    client: {
+      javascript: {
+        code_version: '1.0.0',
+        source_map_enabled: true
+      }
+    }
+  }
+};
+
+// Компонент для отображения при ошибке
 const ErrorFallback = ({ error, resetError }) => (
   <div className="text-center mt-5 p-5">
     <h2 className="text-danger mb-4">Что-то пошло не так</h2>
@@ -25,23 +41,21 @@ const ErrorFallback = ({ error, resetError }) => (
     >
       Попробовать снова
     </button>
-    <details className="mt-4 text-start">
-      <summary>Техническая информация</summary>
-      <pre className="bg-light p-3 rounded mt-2 small">
-        {error?.toString()}
-      </pre>
-    </details>
+    {process.env.NODE_ENV === 'development' && (
+      <details className="mt-4 text-start">
+        <summary>Техническая информация</summary>
+        <pre className="bg-light p-3 rounded mt-2 small">
+          {error?.toString()}
+        </pre>
+      </details>
+    )}
   </div>
 );
 
 function App() {
   return (
     <RollbarProvider config={rollbarConfig}>
-      <RollbarErrorBoundary 
-        fallbackUI={ErrorFallback}
-        level="error"
-        errorMessage="React App Error"
-      >
+      <RollbarErrorBoundary fallbackUI={ErrorFallback}>
         <Provider store={store}>
           <AuthProvider>
             <BrowserRouter>

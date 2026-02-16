@@ -16,10 +16,8 @@ const baseConfig = {
   }
 };
 
-// Получите этот токен из настроек проекта в Rollbar
-// Для безопасности используйте переменные окружения
 const rollbarConfig = {
-  accessToken: process.env.REACT_APP_ROLLBAR_TOKEN || 'your-client-token-here',
+  accessToken: 'bee6d9f788ec424f99a7b262ac6ee990', // Ваш токен из Rollbar
   ...baseConfig,
 };
 
