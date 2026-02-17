@@ -6,9 +6,6 @@ test.describe('Basic page tests', () => {
     console.log('🌐 Testing homepage...');
     await page.goto('/');
     
-    // Делаем скриншот для отладки
-    await page.screenshot({ path: 'homepage.png' });
-    
     // Проверяем ссылку Hexlet Chat
     const link = page.locator('a', { hasText: 'Hexlet Chat' });
     await expect(link).toBeVisible();
@@ -29,8 +26,6 @@ test.describe('Basic page tests', () => {
   test('signup page has correct elements', async ({ page }) => {
     console.log('🌐 Testing signup page...');
     await page.goto('/signup');
-    
-    await page.screenshot({ path: 'signup.png' });
     
     await expect(page.locator('a', { hasText: 'Hexlet Chat' })).toBeVisible();
     await expect(page.locator('h1', { hasText: 'Регистрация' })).toBeVisible();
