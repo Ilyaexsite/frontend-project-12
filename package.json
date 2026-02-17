@@ -1,28 +1,15 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/Ilyaexsite/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Ilyaexsite/frontend-project-12/actions)",
   "scripts": {
     "build": "make build",
     "start": "make start",
     "install": "make install"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Ilyaexsite/frontend-project-12.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Ilyaexsite/frontend-project-12/issues"
-  },
-  "homepage": "https://github.com/Ilyaexsite/frontend-project-12#readme",
   "dependencies": {
     "express": "^4.18.2"
   },
-  "devDependencies": {},
   "engines": {
-    "node": "20.x"
+    "node": "20.18.0"
   }
 }
