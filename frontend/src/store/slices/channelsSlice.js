@@ -62,7 +62,7 @@ const channelsSlice = createSlice({
       state.channelsData.push (payload)
     },
     removeChannel: (state, { payload }) => {
-      state.channelsData = state.channelsData.filter(channel => channel.id !== payload.id);
+      state.channelsData = state.channelsData.filter(channel => channel.id !== payload.id)
       if (state.activeChannelId === payload.id) {
         state.activeChannelId = '1'
       }

@@ -1,6 +1,6 @@
-let translator = (key) => key
+let translator = key => key
 
-export const setTranslator = t => {
+export const setTranslator = (t) => {
   translator = t
 }
 

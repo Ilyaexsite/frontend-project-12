@@ -53,7 +53,7 @@ const Chat = () => {
         top: 0,
         behavior: 'smooth',
       })
-    } 
+    }
     else {
       const channelList = channelsRef.current.querySelectorAll('li')
       const channelHeight = channelList[0].offsetHeight
