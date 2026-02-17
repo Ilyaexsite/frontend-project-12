@@ -1,92 +1,47 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { Provider as RollbarProvider, ErrorBoundary as RollbarErrorBoundary } from '@rollbar/react';
-import { store } from './store';
-import { AuthProvider } from './contexts/AuthContext';
-import LoginPage from './components/LoginPage';
-import SignupPage from './components/SignupPage';
-import ChatPage from './components/Chat/ChatPage';
-import ProtectedRoute from './components/ProtectedRoute';
-import NotFoundPage from './components/NotFoundPage';
-import ToastContainer from './components/Toast/ToastContainer';
-import { Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import Header from './components/Header.jsx';
+import Login from './pages/Login.jsx';
+import Page404 from './pages/Page404.jsx';
+import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
+import Chat from './pages/Chat.jsx';
+import SignupForm from './pages/Signup.jsx';
+import { linkRoutes } from './utils/routes.js';
+import { logout } from './store/slices/authSlice.js';
 
-// ✅ ВОТ СЮДА ВСТАВЛЯЕТСЯ ВАШ КОД ROLLBAR
-const rollbarConfig = {
-  accessToken: '17ea3bff7a674691972bef31b15c7b6f',
-  environment: process.env.NODE_ENV || 'production',
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-  enabled: process.env.NODE_ENV === 'production', // Только в продакшене
-  payload: {
-    client: {
-      javascript: {
-        code_version: '1.0.0',
-        source_map_enabled: true
+const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleTokenCheck = (event) => {
+      if (event.key === 'token') {
+        dispatch(logout());
       }
-    }
-  }
-};
+    };
+    window.addEventListener('storage', handleTokenCheck);
 
-// Компонент для отображения при ошибке (fallback UI)
-const ErrorFallback = ({ error, resetError }) => (
-  <div className="text-center mt-5 p-5">
-    <h2 className="text-danger mb-4">Что-то пошло не так</h2>
-    <p className="text-muted mb-4">Мы уже знаем об этой ошибке и работаем над её исправлением.</p>
-    <button 
-      className="btn btn-primary"
-      onClick={resetError}
-    >
-      Попробовать снова
-    </button>
-    {process.env.NODE_ENV === 'development' && (
-      <details className="mt-4 text-start">
-        <summary>Техническая информация</summary>
-        <pre className="bg-light p-3 rounded mt-2 small">
-          {error?.toString()}
-        </pre>
-      </details>
-    )}
-  </div>
-);
+    return () => {
+      window.removeEventListener('storage', handleTokenCheck);
+    };
+  }, [dispatch]);
 
-function App() {
   return (
-    // ✅ ВОТ ЗДЕСЬ ОБОРАЧИВАЕМ ВСЁ ПРИЛОЖЕНИЕ В ROLLBAR PROVIDER
-    <RollbarProvider config={rollbarConfig}>
-      <RollbarErrorBoundary fallbackUI={ErrorFallback}>
-        <Provider store={store}>
-          <AuthProvider>
-            <BrowserRouter>
-              <Suspense fallback={
-                <div className="d-flex justify-content-center align-items-center vh-100">
-                  <Spinner animation="border" variant="primary" />
-                </div>
-              }>
-                <Routes>
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/signup" element={<SignupPage />} />
-                  <Route path="/404" element={<NotFoundPage />} />
-                  <Route
-                    path="/"
-                    element={
-                      <ProtectedRoute>
-                        <ChatPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route path="*" element={<Navigate to="/404" replace />} />
-                </Routes>
-                <ToastContainer />
-              </Suspense>
-            </BrowserRouter>
-          </AuthProvider>
-        </Provider>
-      </RollbarErrorBoundary>
-    </RollbarProvider>
+    <div className="d-flex flex-column h-100">
+      <Header />
+      <BrowserRouter>
+        <Routes>
+          <Route path={linkRoutes.login} element={<Login />} />
+          <Route path={linkRoutes.signup} element={<SignupForm />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path={linkRoutes.main} element={<Chat />} />
+          </Route>
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
-}
+};
 
 export default App;

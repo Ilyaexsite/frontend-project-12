@@ -1,22 +1,24 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
+  "description": "Chat Slack",
+  "main": "index.js",
   "scripts": {
-    "build": "make build",
-    "start": "node server.js",
-    "start:test": "node test-server.js",
-    "test": "npx playwright test",
-    "test:ci": "npx playwright test --workers=1",
-    "install": "make install"
+    "postinstall": "cd frontend && npm ci",
+    "build": "cd frontend && npm run build",
+    "start": "npx start-server -s ./frontend/dist" 
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdcry/frontend-project-12.git"
+  },
+  "author": "bdcry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bdcry/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/bdcry/frontend-project-12#readme",
   "dependencies": {
-    "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "wait-on": "^9.0.4"
-  },
-  "engines": {
-    "node": "20.18.0"
+    "@hexlet/chat-server": "^2.0.4"
   }
 }

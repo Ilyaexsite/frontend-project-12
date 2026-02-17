@@ -1,16 +1,21 @@
-.PHONY: install build start test setup
+lint-frontend:
+	make -C frontend lint
 
 install:
-	@echo "✓ Install complete"
+	npm ci
 
-setup:
-	bash ./setup.sh
+start-frontend:
+	make -C frontend start
 
-build:
-	@echo "✓ Build complete (static HTML)"
+start-backend:
+	npx start-server -s ./frontend/dist
 
 start:
-	node server.js
+	make start-backend
 
-test:
-	bash ./run-tests.sh
+develop:
+	make start-backend & make start-frontend
+
+build:
+	rm -rf frontend/dist
+	npm run build

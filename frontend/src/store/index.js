@@ -1,16 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { chatApi } from './api/chatApi';
-import channelsReducer from './slices/channelsSlice';
-import messagesReducer from './slices/messagesSlice';
-import modalsReducer from './slices/modalsSlice';
+import authReducer from './slices/authSlice.js';
+import channelsReducer from './slices/channelsSlice.js';
+import messagesReducer from './slices/messagesSlice.js';
+import modalsReducer from './slices/modalsSlice.js';
+import languageReducer from './slices/languageSlice.js';
+import errorMiddleware from './middleware/errorMiddleware.js';
 
-export const store = configureStore({
+export default configureStore({
   reducer: {
-    [chatApi.reducerPath]: chatApi.reducer,
+    auth: authReducer,
     channels: channelsReducer,
     messages: messagesReducer,
-    modals: modalsReducer,
+    ui: modalsReducer,
+    language: languageReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(chatApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([errorMiddleware]),
 });
