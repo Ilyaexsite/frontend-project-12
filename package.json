@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "make build",
-    "start": "make start",
+    "start": "node server.js",
+    "start:test": "node test-server.js",
     "install": "make install"
   },
   "dependencies": {
