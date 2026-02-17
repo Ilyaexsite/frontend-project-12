@@ -23,9 +23,9 @@ const Chat = () => {
   const activeChannelId = useSelector(({ channels }) => channels.activeChannelId)
   const messagesData = useSelector(({ messages }) => messages.messagesData)
 
-  const activeChannelForTitle = channelsData.find((c) => c.id === activeChannelId) || {}
-  const activeChannelIndex = channelsData.findIndex((channel) => channel.id === activeChannelId)
-  const filteredMessage = messagesData?.filter((m) => m.channelId === activeChannelId)
+  const activeChannelForTitle = channelsData.find(c => c.id === activeChannelId) || {}
+  const activeChannelIndex = channelsData.findIndex(channel => channel.id === activeChannelId)
+  const filteredMessage = messagesData?.filter(m => m.channelId === activeChannelId)
 
   const messagesRef = useRef(null)
   const prevMessagesLength = useRef(0)
@@ -44,7 +44,7 @@ const Chat = () => {
         behavior: 'smooth',
       })
     }
-    prevMessagesLength.current = filteredMessage.length;
+    prevMessagesLength.current = filteredMessage.length
   }, [filteredMessage])
 
   useEffect(() => {
@@ -53,9 +53,10 @@ const Chat = () => {
         top: 0,
         behavior: 'smooth',
       })
-    } else {
+    } 
+    else {
       const channelList = channelsRef.current.querySelectorAll('li')
-      const channelHeight = channelList[0].offsetHeight;
+      const channelHeight = channelList[0].offsetHeight
       const scrollTop = activeChannelIndex * channelHeight
       channelsRef.current.scrollTo({
         top: scrollTop,
@@ -64,7 +65,7 @@ const Chat = () => {
     }
   }, [channelsData, activeChannelId, activeChannelIndex])
 
-  const renderMessages = () => filteredMessage.map((message) => (
+  const renderMessages = () => filteredMessage.map(message => (
     <div className="text-break mb-2" key={message.id}>
       <b className={message.username === username ? 'fw-bold' : 'fw-normal'}>{message.username}</b>
       :

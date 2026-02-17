@@ -4,7 +4,7 @@ export default {
       title: 'Log In',
       placeholder_username: 'Your nickname',
       placeholder_password: 'Password',
-      span: "Dont have an account?",
+      span: 'Dont have an account?',
       registration: 'Sign Up',
       errors: {
         wrongLogin: 'Invalid username or password',

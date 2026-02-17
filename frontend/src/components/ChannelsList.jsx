@@ -1,6 +1,6 @@
 import { Button, Nav, Dropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { selectActiveTab } from '../store/slices/channelsSlice'
 import { setStatusChannelModal } from '../store/slices/modalsSlice'
 import RenameChannelModal from './modals/RenameChannelModal'
@@ -12,7 +12,7 @@ const ChannelsList = ({ data = { channels: [], activeChannelId: null } }) => {
   const { channels, activeChannelId } = data
   const modals = useSelector(({ ui }) => ui.modals)
 
-  const renderNotRemovableChannels = (channel) => !channel.removable && (
+  const renderNotRemovableChannels = channel => !channel.removable && (
     <Button
       type="button"
       className="w-100 rounded-0 text-start text-truncate"
@@ -24,7 +24,7 @@ const ChannelsList = ({ data = { channels: [], activeChannelId: null } }) => {
     </Button>
   )
 
-  const renderRemovableChannels = (channel) => (
+  const renderRemovableChannels = channel => (
     <Dropdown className="d-flex btn-group" role="group">
       <Button
         type="button"
@@ -70,7 +70,7 @@ const ChannelsList = ({ data = { channels: [], activeChannelId: null } }) => {
 
   return (
     <>
-      {channels.map((channel) => (
+      {channels.map(channel => (
         <Nav.Item as="li" className="w-100" key={channel.id}>
           {channel.removable
             ? renderRemovableChannels(channel)

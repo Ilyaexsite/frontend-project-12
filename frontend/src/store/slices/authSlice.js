@@ -30,7 +30,7 @@ const authSlice = createSlice({
       localStorage.setItem('user', state.username)
     },
     logout: (state, action) => {
-      state.token = action.payload;
+      state.token = action.payload
       state.username = action.payload
       state.isLoggedIn = false
       localStorage.clear()
@@ -45,7 +45,7 @@ const authSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, { payload }) => {
         state.token = payload.token
         state.username = payload.username
-        state.isLoggedIn = true;
+        state.isLoggedIn = true
         localStorage.setItem('token', state.token)
         localStorage.setItem('user', state.username)
         state.loadingStatus = 'idle'

@@ -27,14 +27,14 @@ const SignupForm = () => {
     },
     validationSchema: signupSchema(t),
     onSubmit: async (values, { setFieldError }) => {
-      const { username, password } = values;
+      const { username, password } = values
       const resultAction = await dispatch(signupUser({ username, password }))
 
       if (signupUser.fulfilled.type === resultAction.type) {
-        navigate(linkRoutes.main);
+        navigate(linkRoutes.main)
       }
       if (signupUser.rejected.type === resultAction.type && resultAction.error.message.includes('409')) {
-        setFieldError('username', t('registration.errors.alredyRegistred'));
+        setFieldError('username', t('registration.errors.alredyRegistred'))
       }
     },
   })

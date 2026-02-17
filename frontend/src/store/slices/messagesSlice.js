@@ -18,7 +18,7 @@ export const sendMessagesByToken = createAsyncThunk(
     const response = await axios.post(apiPath.messagesPath(), newMessage, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    return response.data;
+    return response.data
   },
 )
 
@@ -30,7 +30,7 @@ const messagesSlice = createSlice({
       state.messagesData.push(action.payload)
     },
     removeMessageByChannelId: (state, { payload }) => {
-      state.messagesData = state.messagesData.filter((message) => message.channelId !== payload.id);
+      state.messagesData = state.messagesData.filter(message => message.channelId !== payload.id)
     },
   },
   extraReducers: (builder) => {

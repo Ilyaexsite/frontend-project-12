@@ -15,14 +15,14 @@ const RenameChannelModal = () => {
   const modalStatus = useSelector(({ ui }) => ui.modals.renameChannelModal)
   const token = useSelector(({ auth }) => auth.token)
   const channelsData = useSelector(({ channels }) => channels.channelsData)
-  const currentChannel = channelsData.find((channel) => channel.id === activeChannelId)
+  const currentChannel = channelsData.find(channel => channel.id === activeChannelId)
   const filter = useContext(FilterContext)
 
   const inputRef = useRef(null)
 
   useEffect(() => {
     inputRef.current.focus()
-  }, []);
+  }, [])
 
   const formik = useFormik({
     initialValues: {

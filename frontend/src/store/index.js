@@ -14,5 +14,5 @@ export default configureStore({
     ui: modalsReducer,
     language: languageReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([errorMiddleware]),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([errorMiddleware]),
 })

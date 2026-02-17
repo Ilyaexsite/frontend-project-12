@@ -5,7 +5,7 @@ export const apiPath = {
   signupPath: () => `${BASE_API_URL}/signup`,
   messagesPath: () => `${BASE_API_URL}/messages`,
   channelsPath: () => `${BASE_API_URL}/channels`,
-  channelPath: (id) => `${BASE_API_URL}/channels/${id}`,
+  channelPath: id => `${BASE_API_URL}/channels/${id}`,
 }
 
 export const linkRoutes = {

@@ -42,7 +42,7 @@ export const renameChannelById = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}` },
       },
     )
-    return response.data;
+    return response.data
   },
 )
 
@@ -59,16 +59,16 @@ const channelsSlice = createSlice({
       state.activeChannelId = payload
     },
     addChannel: (state, { payload }) => {
-      state.channelsData.push(payload)
+      state.channelsData.push (payload)
     },
     removeChannel: (state, { payload }) => {
-      state.channelsData = state.channelsData.filter((channel) => channel.id !== payload.id);
+      state.channelsData = state.channelsData.filter(channel => channel.id !== payload.id);
       if (state.activeChannelId === payload.id) {
         state.activeChannelId = '1'
       }
     },
     renameChannel: (state, { payload }) => {
-      const index = state.channelsData.findIndex((channel) => channel.id === payload.id);
+      const index = state.channelsData.findIndex(channel => channel.id === payload.id)
       state.channelsData[index] = payload
     },
   },
@@ -80,7 +80,7 @@ const channelsSlice = createSlice({
         state.error = null
       })
       .addCase(fetchChannelsByToken.fulfilled, (state, { payload }) => {
-        state.channelsData = payload;
+        state.channelsData = payload
         state.loadingStatus = 'idle'
         state.error = null
       })
@@ -108,7 +108,7 @@ const channelsSlice = createSlice({
         state.error = null
       })
       .addCase(removeChannelById.fulfilled, (state, { payload }) => {
-        state.channelsData = state.channelsData.filter((channel) => channel.id !== payload.id);
+        state.channelsData = state.channelsData.filter(channel => channel.id !== payload.id)
         if (state.activeChannelId === payload.id) {
           state.activeChannelId = '1'
         }
@@ -125,7 +125,7 @@ const channelsSlice = createSlice({
         state.error = null
       })
       .addCase(renameChannelById.fulfilled, (state, { payload }) => {
-        const index = state.channelsData.findIndex((channel) => channel.id === payload.id);
+        const index = state.channelsData.findIndex(channel => channel.id === payload.id)
         state.channelsData[index] = payload
         state.loadingStatus = 'idle'
         state.error = null

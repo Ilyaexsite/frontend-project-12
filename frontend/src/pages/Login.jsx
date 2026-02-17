@@ -17,14 +17,16 @@ const handleSubmit = async (values, navigate, setStatus, dispatch, t) => {
       username: values.username,
       password: values.password,
     })
-    const { token, username } = data;
+    const { token, username } = data
     dispatch(loginSuccess({ token, username }))
     setStatus()
     navigate(linkRoutes.main)
-  } catch (error) {
+  } 
+  catch (error) {
     if (error.code === 'ERR_NETWORK') {
       handleApiError(error, t)
-    } else {
+    } 
+    else {
       setStatus(t('login.errors.wrongLogin'))
     }
   }

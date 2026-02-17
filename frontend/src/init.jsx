@@ -14,7 +14,7 @@ import { setTranslator } from './utils/translator.js'
 import { FilterProvider } from './utils/context/FilterContext.jsx'
 
 const init = async () => {
-  const socket = io();
+  const socket = io()
   const i18n = i18next.createInstance()
 
   const rollbarConfig = {
