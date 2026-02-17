@@ -1,40 +1,20 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Hexlet Chat - Регистрация</title>
 </head>
 <body>
-    <!-- Тот же хедер для навигации -->
-    <header>
-        <a href="/">Hexlet Chat</a>
-    </header>
+    <a href="/">Hexlet Chat</a>
 
-    <main>
-        <h1>Регистрация</h1>
-        
-        <form>
-            <div>
-                <label>Ваш ник</label>
-                <input type="text" name="username" required>
-            </div>
-            
-            <div>
-                <label>Пароль</label>
-                <input type="password" name="password" required>
-            </div>
-            
-            <div>
-                <label>Подтвердите пароль</label>
-                <input type="password" name="confirmPassword" required>
-            </div>
-            
-            <button type="submit">Зарегистрироваться</button>
-        </form>
-        
-        <p>
-            <a href="/login">Вход</a>
-        </p>
-    </main>
+    <h1>Регистрация</h1>
+    
+    <form>
+        <p>Ваш ник <input type="text" name="username"></p>
+        <p>Пароль <input type="password" name="password"></p>
+        <p>Подтвердите пароль <input type="password" name="confirmPassword"></p>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    
+    <p><a href="/login">Вход</a></p>
 </body>
 </html>
