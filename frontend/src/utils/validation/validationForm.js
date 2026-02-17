@@ -1,9 +1,9 @@
-import * as yup from 'yup';
+import * as yup from 'yup'
 
 export const channelSchema = (channels, t, currentChannelName = '') => {
   const createdChannels = channels
     .map(({ name }) => name)
-    .filter((name) => name !== currentChannelName);
+    .filter((name) => name !== currentChannelName)
 
   return yup.object().shape({
     name: yup
@@ -13,8 +13,8 @@ export const channelSchema = (channels, t, currentChannelName = '') => {
       .min(3, t('validation.channelNameLength'))
       .max(20, t('validation.channelNameLength'))
       .notOneOf([...createdChannels], t('validation.uniqueChannel')),
-  });
-};
+  })
+}
 
 export const signupSchema = (t) => yup.object().shape({
   username: yup
@@ -30,4 +30,4 @@ export const signupSchema = (t) => yup.object().shape({
     .string()
     .required(t('validation.required'))
     .oneOf([yup.ref('password')], t('validation.passwordMatch')),
-});
+})

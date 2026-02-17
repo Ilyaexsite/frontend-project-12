@@ -5,20 +5,20 @@ import {
   Card,
   Form,
   Button,
-} from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { signupSchema } from '../utils/validation/validationForm';
-import { signupUser } from '../store/slices/authSlice';
-import avatar from '../assets/avatar_1-D7Cot-zE.jpg';
-import { linkRoutes } from '../utils/routes';
+} from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { useTranslation } from 'react-i18next'
+import { signupSchema } from '../utils/validation/validationForm'
+import { signupUser } from '../store/slices/authSlice'
+import avatar from '../assets/avatar_1-D7Cot-zE.jpg'
+import { linkRoutes } from '../utils/routes'
 
 const SignupForm = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -28,7 +28,7 @@ const SignupForm = () => {
     validationSchema: signupSchema(t),
     onSubmit: async (values, { setFieldError }) => {
       const { username, password } = values;
-      const resultAction = await dispatch(signupUser({ username, password }));
+      const resultAction = await dispatch(signupUser({ username, password }))
 
       if (signupUser.fulfilled.type === resultAction.type) {
         navigate(linkRoutes.main);
@@ -37,7 +37,7 @@ const SignupForm = () => {
         setFieldError('username', t('registration.errors.alredyRegistred'));
       }
     },
-  });
+  })
 
   return (
     <Container fluid className="h-100">
@@ -124,7 +124,7 @@ const SignupForm = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default SignupForm;
+export default SignupForm

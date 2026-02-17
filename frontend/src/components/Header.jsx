@@ -1,15 +1,15 @@
-import { Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../store/slices/authSlice';
-import { changeLanguage } from '../store/slices/languageSlice';
-import { linkRoutes } from '../utils/routes';
+import { Button } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../store/slices/authSlice'
+import { changeLanguage } from '../store/slices/languageSlice'
+import { linkRoutes } from '../utils/routes'
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const { t, i18n } = useTranslation();
-  const isLoggedIn = useSelector(({ auth }) => auth.isLoggedIn);
-  const currentLanguage = useSelector(({ language }) => language.currentLanguage);
+  const dispatch = useDispatch()
+  const { t, i18n } = useTranslation()
+  const isLoggedIn = useSelector(({ auth }) => auth.isLoggedIn)
+  const currentLanguage = useSelector(({ language }) => language.currentLanguage)
 
   const renderLogoutButton = () => {
     if (isLoggedIn) {
@@ -17,21 +17,21 @@ const Header = () => {
         <Button type="button" onClick={() => dispatch(logout())}>
           {t('header.logout')}
         </Button>
-      );
+      )
     }
-    return null;
-  };
+    return null
+  }
 
   const renderLanguageButtons = () => {
     const languages = [
       { label: 'Русский', code: 'ru' },
       { label: 'English', code: 'en' },
-    ];
+    ]
 
     const handleChangeLanguage = (lang) => {
-      i18n.changeLanguage(lang);
-      dispatch(changeLanguage(lang));
-    };
+      i18n.changeLanguage(lang)
+      dispatch(changeLanguage(lang))
+    }
 
     return (
       <div className="language-buttons me-2">
@@ -46,8 +46,8 @@ const Header = () => {
           </Button>
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
@@ -63,7 +63,7 @@ const Header = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

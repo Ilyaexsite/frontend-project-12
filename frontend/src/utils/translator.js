@@ -1,7 +1,7 @@
-let translator = (key) => key;
+let translator = (key) => key
 
 export const setTranslator = (t) => {
-  translator = t;
-};
+  translator = t
+}
 
-export const getTranslator = () => translator;
+export const getTranslator = () => translator

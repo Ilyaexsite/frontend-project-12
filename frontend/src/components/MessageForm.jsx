@@ -1,34 +1,34 @@
-import { Form, Button, InputGroup } from 'react-bootstrap';
-import { useFormik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { sendMessagesByToken } from '../store/slices/messagesSlice';
-import FilterContext from '../utils/context/FilterContext';
+import { Form, Button, InputGroup } from 'react-bootstrap'
+import { useFormik } from 'formik'
+import { useTranslation } from 'react-i18next'
+import { useContext } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { sendMessagesByToken } from '../store/slices/messagesSlice'
+import FilterContext from '../utils/context/FilterContext'
 
 const MessageForm = () => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const token = useSelector(({ auth }) => auth.token);
-  const username = useSelector(({ auth }) => auth.username);
-  const activeChannelId = useSelector(({ channels }) => channels.activeChannelId);
-  const filter = useContext(FilterContext);
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const token = useSelector(({ auth }) => auth.token)
+  const username = useSelector(({ auth }) => auth.username)
+  const activeChannelId = useSelector(({ channels }) => channels.activeChannelId)
+  const filter = useContext(FilterContext)
 
   const formik = useFormik({
     initialValues: {
       body: '',
     },
     onSubmit: (values, { resetForm }) => {
-      const cleanMessages = filter.clean(values.body);
+      const cleanMessages = filter.clean(values.body)
       const newMessage = {
         body: cleanMessages,
         channelId: activeChannelId,
         username,
       };
-      dispatch(sendMessagesByToken({ token, newMessage }));
-      resetForm();
+      dispatch(sendMessagesByToken({ token, newMessage }))
+      resetForm()
     },
-  });
+  })
 
   return (
     <Form
@@ -73,7 +73,7 @@ const MessageForm = () => {
         </Button>
       </InputGroup>
     </Form>
-  );
-};
+  )
+}
 
-export default MessageForm;
+export default MessageForm

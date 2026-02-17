@@ -1,13 +1,13 @@
-import { Button, Modal } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { setStatusChannelModal } from '../../store/slices/modalsSlice';
-import ChannelForm from '../ChannelForm';
+import { Button, Modal } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { setStatusChannelModal } from '../../store/slices/modalsSlice'
+import ChannelForm from '../ChannelForm'
 
 const AddChannelModal = () => {
-  const dispatch = useDispatch();
-  const modalStatus = useSelector(({ ui }) => ui.modals.addChannelModal);
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const modalStatus = useSelector(({ ui }) => ui.modals.addChannelModal)
+  const { t } = useTranslation()
 
   return (
     <>
@@ -50,7 +50,7 @@ const AddChannelModal = () => {
         </Modal.Body>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default AddChannelModal;
+export default AddChannelModal

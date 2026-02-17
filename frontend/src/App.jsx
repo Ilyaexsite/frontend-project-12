@@ -1,31 +1,31 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import Header from './components/Header.jsx';
-import Login from './pages/Login.jsx';
-import Page404 from './pages/Page404.jsx';
-import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
-import Chat from './pages/Chat.jsx';
-import SignupForm from './pages/Signup.jsx';
-import { linkRoutes } from './utils/routes.js';
-import { logout } from './store/slices/authSlice.js';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import Header from './components/Header.jsx'
+import Login from './pages/Login.jsx'
+import Page404 from './pages/Page404.jsx'
+import ProtectedRoutes from './utils/ProtectedRoutes.jsx'
+import Chat from './pages/Chat.jsx'
+import SignupForm from './pages/Signup.jsx'
+import { linkRoutes } from './utils/routes.js'
+import { logout } from './store/slices/authSlice.js'
 
 const App = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const handleTokenCheck = (event) => {
       if (event.key === 'token') {
-        dispatch(logout());
+        dispatch(logout())
       }
-    };
-    window.addEventListener('storage', handleTokenCheck);
+    }
+    window.addEventListener('storage', handleTokenCheck)
 
     return () => {
-      window.removeEventListener('storage', handleTokenCheck);
-    };
-  }, [dispatch]);
+      window.removeEventListener('storage', handleTokenCheck)
+    }
+  }, [dispatch])
 
   return (
     <div className="d-flex flex-column h-100">
@@ -41,7 +41,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

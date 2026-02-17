@@ -1,43 +1,43 @@
 import {
   Container, Row, Col, Card, Form, Button,
-} from 'react-bootstrap';
-import axios from 'axios';
-import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { loginSuccess } from '../store/slices/authSlice';
-import avatar from '../assets/avatar-DIE1AEpS.jpg';
-import { apiPath, linkRoutes } from '../utils/routes';
-import handleApiError from '../utils/errorHandler';
+} from 'react-bootstrap'
+import axios from 'axios'
+import { useFormik } from 'formik'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { loginSuccess } from '../store/slices/authSlice'
+import avatar from '../assets/avatar-DIE1AEpS.jpg'
+import { apiPath, linkRoutes } from '../utils/routes'
+import handleApiError from '../utils/errorHandler'
 
 const handleSubmit = async (values, navigate, setStatus, dispatch, t) => {
   try {
     const { data } = await axios.post(apiPath.loginPath(), {
       username: values.username,
       password: values.password,
-    });
+    })
     const { token, username } = data;
-    dispatch(loginSuccess({ token, username }));
-    setStatus();
-    navigate(linkRoutes.main);
+    dispatch(loginSuccess({ token, username }))
+    setStatus()
+    navigate(linkRoutes.main)
   } catch (error) {
     if (error.code === 'ERR_NETWORK') {
-      handleApiError(error, t);
+      handleApiError(error, t)
     } else {
-      setStatus(t('login.errors.wrongLogin'));
+      setStatus(t('login.errors.wrongLogin'))
     }
   }
-};
+}
 
 const Login = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     onSubmit: (values, { setStatus }) => handleSubmit(values, navigate, setStatus, dispatch, t),
-  });
+  })
 
   return (
     <Container fluid className="h-100">
@@ -114,7 +114,7 @@ const Login = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

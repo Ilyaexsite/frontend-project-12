@@ -1,25 +1,25 @@
-import { Button, Modal } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { setStatusChannelModal } from '../../store/slices/modalsSlice';
-import { removeChannelById } from '../../store/slices/channelsSlice';
+import { Button, Modal } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { setStatusChannelModal } from '../../store/slices/modalsSlice'
+import { removeChannelById } from '../../store/slices/channelsSlice'
 
 const RemoveChannelModal = () => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const token = useSelector(({ auth }) => auth.token);
-  const modalStatus = useSelector(({ ui }) => ui.modals.removeChannelModal);
-  const { activeChannelId } = useSelector(({ ui }) => ui.modals);
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const token = useSelector(({ auth }) => auth.token)
+  const modalStatus = useSelector(({ ui }) => ui.modals.removeChannelModal)
+  const { activeChannelId } = useSelector(({ ui }) => ui.modals)
 
   const handleRemove = () => {
-    dispatch(removeChannelById({ token, id: activeChannelId }));
+    dispatch(removeChannelById({ token, id: activeChannelId }))
     dispatch(
       setStatusChannelModal({
         modalName: 'removeChannelModal',
         status: false,
       }),
-    );
-  };
+    )
+  }
 
   return (
     <Modal
@@ -56,7 +56,7 @@ const RemoveChannelModal = () => {
         </div>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default RemoveChannelModal;
+export default RemoveChannelModal

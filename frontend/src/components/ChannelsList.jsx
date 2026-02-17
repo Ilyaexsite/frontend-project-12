@@ -1,28 +1,28 @@
-import { Button, Nav, Dropdown } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { Button, Nav, Dropdown } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
-import { selectActiveTab } from '../store/slices/channelsSlice';
-import { setStatusChannelModal } from '../store/slices/modalsSlice';
-import RenameChannelModal from './modals/RenameChannelModal';
-import RemoveChannelModal from './modals/RemoveChannelModal';
+import { selectActiveTab } from '../store/slices/channelsSlice'
+import { setStatusChannelModal } from '../store/slices/modalsSlice'
+import RenameChannelModal from './modals/RenameChannelModal'
+import RemoveChannelModal from './modals/RemoveChannelModal'
 
 const ChannelsList = ({ data = { channels: [], activeChannelId: null } }) => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const { channels, activeChannelId } = data;
-  const modals = useSelector(({ ui }) => ui.modals);
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const { channels, activeChannelId } = data
+  const modals = useSelector(({ ui }) => ui.modals)
 
   const renderNotRemovableChannels = (channel) => !channel.removable && (
-  <Button
-    type="button"
-    className="w-100 rounded-0 text-start text-truncate"
-    variant={channel.id === activeChannelId ? 'secondary' : ''}
-    onClick={() => dispatch(selectActiveTab(channel.id))}
-  >
-    <span className="me-1">#</span>
-    {channel.name}
-  </Button>
-  );
+    <Button
+      type="button"
+      className="w-100 rounded-0 text-start text-truncate"
+      variant={channel.id === activeChannelId ? 'secondary' : ''}
+      onClick={() => dispatch(selectActiveTab(channel.id))}
+    >
+      <span className="me-1">#</span>
+      {channel.name}
+    </Button>
+  )
 
   const renderRemovableChannels = (channel) => (
     <Dropdown className="d-flex btn-group" role="group">
@@ -66,7 +66,7 @@ const ChannelsList = ({ data = { channels: [], activeChannelId: null } }) => {
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
-  );
+  )
 
   return (
     <>
@@ -80,7 +80,7 @@ const ChannelsList = ({ data = { channels: [], activeChannelId: null } }) => {
       {modals.removeChannelModal && <RemoveChannelModal />}
       {modals.renameChannelModal && <RenameChannelModal />}
     </>
-  );
-};
+  )
+}
 
-export default ChannelsList;
+export default ChannelsList

@@ -1,68 +1,68 @@
-import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import {
   Col,
   Container,
   Row,
   Nav,
-} from 'react-bootstrap';
-import MessageForm from '../components/MessageForm';
-import { fetchChannelsByToken } from '../store/slices/channelsSlice';
-import { fetchMessagesByToken } from '../store/slices/messagesSlice';
-import AddChannelModal from '../components/modals/AddChannelModal';
-import ChannelsList from '../components/ChannelsList';
+} from 'react-bootstrap'
+import MessageForm from '../components/MessageForm'
+import { fetchChannelsByToken } from '../store/slices/channelsSlice'
+import { fetchMessagesByToken } from '../store/slices/messagesSlice'
+import AddChannelModal from '../components/modals/AddChannelModal'
+import ChannelsList from '../components/ChannelsList'
 
 const Chat = () => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
 
-  const token = useSelector(({ auth }) => auth.token);
-  const username = useSelector(({ auth }) => auth.username);
-  const channelsData = useSelector(({ channels }) => channels.channelsData);
-  const activeChannelId = useSelector(({ channels }) => channels.activeChannelId);
-  const messagesData = useSelector(({ messages }) => messages.messagesData);
+  const token = useSelector(({ auth }) => auth.token)
+  const username = useSelector(({ auth }) => auth.username)
+  const channelsData = useSelector(({ channels }) => channels.channelsData)
+  const activeChannelId = useSelector(({ channels }) => channels.activeChannelId)
+  const messagesData = useSelector(({ messages }) => messages.messagesData)
 
-  const activeChannelForTitle = channelsData.find((c) => c.id === activeChannelId) || {};
-  const activeChannelIndex = channelsData.findIndex((channel) => channel.id === activeChannelId);
-  const filteredMessage = messagesData?.filter((m) => m.channelId === activeChannelId);
+  const activeChannelForTitle = channelsData.find((c) => c.id === activeChannelId) || {}
+  const activeChannelIndex = channelsData.findIndex((channel) => channel.id === activeChannelId)
+  const filteredMessage = messagesData?.filter((m) => m.channelId === activeChannelId)
 
-  const messagesRef = useRef(null);
-  const prevMessagesLength = useRef(0);
-  const channelsRef = useRef(null);
-  const defaultChannelId = '1';
+  const messagesRef = useRef(null)
+  const prevMessagesLength = useRef(0)
+  const channelsRef = useRef(null)
+  const defaultChannelId = '1'
 
   useEffect(() => {
-    dispatch(fetchChannelsByToken(token));
-    dispatch(fetchMessagesByToken(token));
-  }, [dispatch, token]);
+    dispatch(fetchChannelsByToken(token))
+    dispatch(fetchMessagesByToken(token))
+  }, [dispatch, token])
 
   useEffect(() => {
     if (filteredMessage.length > prevMessagesLength.current) {
       messagesRef.current.scrollTo({
         top: messagesRef.current.scrollHeight,
         behavior: 'smooth',
-      });
+      })
     }
     prevMessagesLength.current = filteredMessage.length;
-  }, [filteredMessage]);
+  }, [filteredMessage])
 
   useEffect(() => {
     if (activeChannelId === defaultChannelId) {
       channelsRef.current.scrollTo({
         top: 0,
         behavior: 'smooth',
-      });
+      })
     } else {
-      const channelList = channelsRef.current.querySelectorAll('li');
+      const channelList = channelsRef.current.querySelectorAll('li')
       const channelHeight = channelList[0].offsetHeight;
-      const scrollTop = activeChannelIndex * channelHeight;
+      const scrollTop = activeChannelIndex * channelHeight
       channelsRef.current.scrollTo({
         top: scrollTop,
         behavior: 'smooth',
-      });
+      })
     }
-  }, [channelsData, activeChannelId, activeChannelIndex]);
+  }, [channelsData, activeChannelId, activeChannelIndex])
 
   const renderMessages = () => filteredMessage.map((message) => (
     <div className="text-break mb-2" key={message.id}>
@@ -71,7 +71,7 @@ const Chat = () => {
       {' '}
       {message.body}
     </div>
-  ));
+  ))
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
@@ -117,7 +117,7 @@ const Chat = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default Chat;
+export default Chat

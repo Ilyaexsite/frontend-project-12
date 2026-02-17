@@ -1,19 +1,19 @@
-import { useFormik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { Button, Form } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useContext } from 'react';
-import { setStatusChannelModal } from '../store/slices/modalsSlice';
-import { channelSchema } from '../utils/validation/validationForm';
-import { createChannelsByToken } from '../store/slices/channelsSlice';
-import FilterContext from '../utils/context/FilterContext';
+import { useFormik } from 'formik'
+import { useTranslation } from 'react-i18next'
+import { Button, Form } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useContext } from 'react'
+import { setStatusChannelModal } from '../store/slices/modalsSlice'
+import { channelSchema } from '../utils/validation/validationForm'
+import { createChannelsByToken } from '../store/slices/channelsSlice'
+import FilterContext from '../utils/context/FilterContext'
 
 const ChannelForm = () => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const token = useSelector(({ auth }) => auth.token);
-  const channelsData = useSelector(({ channels }) => channels.channelsData);
-  const filter = useContext(FilterContext);
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const token = useSelector(({ auth }) => auth.token)
+  const channelsData = useSelector(({ channels }) => channels.channelsData)
+  const filter = useContext(FilterContext)
 
   const formik = useFormik({
     initialValues: {
@@ -21,13 +21,13 @@ const ChannelForm = () => {
     },
     validationSchema: channelSchema(channelsData, t),
     onSubmit: (values, { resetForm }) => {
-      const cleanChannelName = filter.clean(values.name.trim());
-      const newChannel = { name: cleanChannelName };
-      dispatch(createChannelsByToken({ token, newChannel }));
-      dispatch(setStatusChannelModal({ modalName: 'addChannelModal', status: false }));
-      resetForm();
+      const cleanChannelName = filter.clean(values.name.trim())
+      const newChannel = { name: cleanChannelName }
+      dispatch(createChannelsByToken({ token, newChannel }))
+      dispatch(setStatusChannelModal({ modalName: 'addChannelModal', status: false }))
+      resetForm()
     },
-  });
+  })
 
   return (
     <Form onSubmit={formik.handleSubmit}>
@@ -62,7 +62,7 @@ const ChannelForm = () => {
         </div>
       </Form.Group>
     </Form>
-  );
-};
+  )
+}
 
-export default ChannelForm;
+export default ChannelForm

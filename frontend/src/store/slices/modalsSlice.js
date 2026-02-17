@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 const modalsSlice = createSlice({
   name: 'ui',
@@ -23,7 +23,7 @@ const modalsSlice = createSlice({
       };
     },
   },
-});
+})
 
-export default modalsSlice.reducer;
-export const { setStatusChannelModal } = modalsSlice.actions;
+export default modalsSlice.reducer
+export const { setStatusChannelModal } = modalsSlice.actions

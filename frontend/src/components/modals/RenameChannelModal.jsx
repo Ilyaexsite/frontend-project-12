@@ -1,27 +1,27 @@
-import { Button, Modal, Form } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef, useContext } from 'react';
-import { useFormik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { setStatusChannelModal } from '../../store/slices/modalsSlice';
-import { renameChannelById } from '../../store/slices/channelsSlice';
-import { channelSchema } from '../../utils/validation/validationForm';
-import FilterContext from '../../utils/context/FilterContext';
+import { Button, Modal, Form } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef, useContext } from 'react'
+import { useFormik } from 'formik'
+import { useTranslation } from 'react-i18next'
+import { setStatusChannelModal } from '../../store/slices/modalsSlice'
+import { renameChannelById } from '../../store/slices/channelsSlice'
+import { channelSchema } from '../../utils/validation/validationForm'
+import FilterContext from '../../utils/context/FilterContext'
 
 const RenameChannelModal = () => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const { activeChannelId } = useSelector(({ ui }) => ui.modals);
-  const modalStatus = useSelector(({ ui }) => ui.modals.renameChannelModal);
-  const token = useSelector(({ auth }) => auth.token);
-  const channelsData = useSelector(({ channels }) => channels.channelsData);
-  const currentChannel = channelsData.find((channel) => channel.id === activeChannelId);
-  const filter = useContext(FilterContext);
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const { activeChannelId } = useSelector(({ ui }) => ui.modals)
+  const modalStatus = useSelector(({ ui }) => ui.modals.renameChannelModal)
+  const token = useSelector(({ auth }) => auth.token)
+  const channelsData = useSelector(({ channels }) => channels.channelsData)
+  const currentChannel = channelsData.find((channel) => channel.id === activeChannelId)
+  const filter = useContext(FilterContext)
 
-  const inputRef = useRef(null);
+  const inputRef = useRef(null)
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current.focus()
   }, []);
 
   const formik = useFormik({
@@ -30,19 +30,19 @@ const RenameChannelModal = () => {
     },
     validationSchema: channelSchema(channelsData, t, currentChannel.name),
     onSubmit: (values, { resetForm }) => {
-      const cleanChannelName = filter.clean(values.name.trim());
-      const editedChannel = { name: cleanChannelName };
-      dispatch(renameChannelById({ token, id: currentChannel.id, editedChannel }));
+      const cleanChannelName = filter.clean(values.name.trim())
+      const editedChannel = { name: cleanChannelName }
+      dispatch(renameChannelById({ token, id: currentChannel.id, editedChannel }))
       dispatch(
         setStatusChannelModal({
           modalName: 'renameChannelModal',
           status: false,
           channelId: null,
         }),
-      );
-      resetForm();
+      )
+      resetForm()
     },
-  });
+  })
 
   return (
     <Modal
@@ -109,7 +109,7 @@ const RenameChannelModal = () => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default RenameChannelModal;
+export default RenameChannelModal
