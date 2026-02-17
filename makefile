@@ -1,4 +1,4 @@
-.PHONY: install build start
+.PHONY: install build start test
 
 install:
 	@echo "✓ Install complete"
@@ -8,3 +8,6 @@ build:
 
 start:
 	node server.js
+
+test:
+	bash ./run-tests.sh
