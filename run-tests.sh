@@ -2,43 +2,35 @@
 set -e
 
 echo "========================================="
-echo "🧪 Setting up test environment..."
+echo "🧪 Running tests..."
 echo "========================================="
 
-# Устанавливаем Playwright и браузеры
-npx playwright install --with-deps chromium
+# Проверяем наличие Playwright
+if ! command -v npx playwright &> /dev/null; then
+    echo "📦 Installing Playwright..."
+    npm install -g @playwright/test
+    npx playwright install chromium
+fi
 
-echo "========================================="
+# Запускаем сервер
 echo "🚀 Starting test server..."
-echo "========================================="
-
-# Запускаем сервер в фоне
 npm run start:test &
 SERVER_PID=$!
 
 # Ждем запуска сервера
 sleep 5
 
-# Проверяем, что сервер запустился
-if ! kill -0 $SERVER_PID 2>/dev/null; then
-    echo "❌ Server failed to start!"
-    exit 1
-fi
-
-echo "✅ Server started with PID: $SERVER_PID"
-
-# Проверяем, что сервер отвечает
-echo "📡 Pinging server..."
+# Проверяем сервер
+echo "📡 Checking server..."
 curl --fail http://localhost:5001/ping || {
-    echo "❌ Server is not responding!"
+    echo "❌ Server not responding!"
     exit 1
 }
 
-echo "========================================="
-echo "🧪 Running Playwright tests..."
-echo "========================================="
+echo "✅ Server is running"
 
 # Запускаем тесты
+echo "🧪 Running Playwright tests..."
 npx playwright test
 
 # Сохраняем результат

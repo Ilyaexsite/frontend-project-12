@@ -6,14 +6,11 @@ module.exports = {
     baseURL: 'http://localhost:5001',
     headless: true,
     viewport: { width: 1280, height: 720 },
-    ignoreHTTPSErrors: true,
-    screenshot: 'only-on-failure',
-    trace: 'retain-on-failure',
+    screenshot: 'on',
+    trace: 'on',
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { browserName: 'chromium' },
-    },
+  reporter: [
+    ['html', { outputFolder: 'test-report' }],
+    ['list']
   ],
 };
