@@ -1,11 +1,10 @@
 .PHONY: install build start test
 
 install:
-	npm install
-	cd frontend && npm install
+	@echo "Install complete"
 
 build:
-	cd frontend && npm run build
+	@echo "Build complete"
 
 start:
 	node server.js

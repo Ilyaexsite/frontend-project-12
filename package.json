@@ -5,9 +5,7 @@
   "scripts": {
     "build": "make build",
     "start": "make start",
-    "dev": "concurrently \"npx start-server -p 5001\" \"cd frontend && npm run dev\"",
-    "install-all": "make install",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install": "make install"
   },
   "repository": {
     "type": "git",
@@ -21,12 +19,9 @@
   },
   "homepage": "https://github.com/Ilyaexsite/frontend-project-12#readme",
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4",
-    "express": "^5.2.1"
+    "express": "^4.18.2"
   },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  },
+  "devDependencies": {},
   "engines": {
     "node": "20.x"
   }
