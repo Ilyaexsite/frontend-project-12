@@ -3,8 +3,6 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-
-// ✅ ПРАВИЛЬНО: используем PORT из окружения Render, или 5001 для локальной разработки
 const port = process.env.PORT || 5001;
 
 console.log('='.repeat(60));
@@ -16,7 +14,7 @@ console.log('📌 NODE_ENV:', process.env.NODE_ENV || 'development');
 console.log('📌 __dirname:', __dirname);
 console.log('📌 Current directory:', process.cwd());
 
-// Проверяем папку public
+// Путь к папке public
 const publicPath = path.join(__dirname, 'public');
 console.log('\n📁 Public path:', publicPath);
 console.log('📁 Public exists:', fs.existsSync(publicPath));
@@ -37,6 +35,12 @@ if (fs.existsSync(publicPath)) {
             console.log('📄 index.html contains "Hexlet Chat":', content.includes('Hexlet Chat'));
             console.log('📄 index.html contains "Вход":', content.includes('Вход'));
         }
+        
+        if (fs.existsSync(signupPath)) {
+            const content = fs.readFileSync(signupPath, 'utf8');
+            console.log('📄 signup.html contains "Hexlet Chat":', content.includes('Hexlet Chat'));
+            console.log('📄 signup.html contains "Регистрация":', content.includes('Регистрация'));
+        }
     } catch (error) {
         console.error('❌ Error reading public directory:', error.message);
     }
@@ -53,19 +57,19 @@ app.use((req, res, next) => {
 // Раздаём статические файлы из папки public
 app.use(express.static(publicPath));
 
-// Явные маршруты
+// ✅ ПРАВИЛЬНАЯ МАРШРУТИЗАЦИЯ
 app.get('/', (req, res) => {
-    console.log('📄 Serving index.html for /');
+    console.log('📄 Serving login page (index.html) for /');
     res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 app.get('/login', (req, res) => {
-    console.log('📄 Serving index.html for /login');
+    console.log('📄 Serving login page (index.html) for /login');
     res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 app.get('/signup', (req, res) => {
-    console.log('📄 Serving signup.html for /signup');
+    console.log('📄 Serving signup page for /signup');
     const signupPath = path.join(publicPath, 'signup.html');
     if (fs.existsSync(signupPath)) {
         res.sendFile(signupPath);
@@ -82,7 +86,8 @@ app.get('/ping', (req, res) => {
         status: 'ok', 
         time: new Date().toISOString(),
         port: port,
-        node_version: process.version
+        node_version: process.version,
+        public_files: fs.existsSync(publicPath) ? fs.readdirSync(publicPath) : []
     });
 });
 
@@ -95,7 +100,15 @@ app.use((req, res) => {
 // Обработка ошибок
 app.use((err, req, res, next) => {
     console.error('❌ Server error:', err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send(`
+        <html>
+            <body>
+                <h1>Internal Server Error</h1>
+                <pre>${err.message}</pre>
+                <pre>${err.stack}</pre>
+            </body>
+        </html>
+    `);
 });
 
 // Запуск сервера

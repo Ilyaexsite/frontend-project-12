@@ -5,16 +5,25 @@
 </head>
 <body>
     <a href="/">Hexlet Chat</a>
-
+    
     <h1>Регистрация</h1>
     
     <form>
-        <p>Ваш ник <input type="text" name="username"></p>
-        <p>Пароль <input type="password" name="password"></p>
-        <p>Подтвердите пароль <input type="password" name="confirmPassword"></p>
+        <div>
+            <label>Ваш ник</label>
+            <input type="text" name="username">
+        </div>
+        <div>
+            <label>Пароль</label>
+            <input type="password" name="password">
+        </div>
+        <div>
+            <label>Подтвердите пароль</label>
+            <input type="password" name="confirmPassword">
+        </div>
         <button type="submit">Зарегистрироваться</button>
     </form>
     
-    <p><a href="/login">Вход</a></p>
+    <a href="/login">Вход</a>
 </body>
 </html>

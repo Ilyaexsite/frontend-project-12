@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hexlet Chat</title>
+    <title>Hexlet Chat - Вход</title>
 </head>
 <body>
-    <!-- ПРОСТО ссылка, которую ищут тесты -->
     <a href="/">Hexlet Chat</a>
-
+    
     <h1>Вход</h1>
     
     <form>
-        <p>Ваш ник <input type="text" name="username"></p>
-        <p>Пароль <input type="password" name="password"></p>
+        <div>
+            <label>Ваш ник</label>
+            <input type="text" name="username">
+        </div>
+        <div>
+            <label>Пароль</label>
+            <input type="password" name="password">
+        </div>
         <button type="submit">Войти</button>
     </form>
     
-    <p><a href="/signup">Регистрация</a></p>
+    <a href="/signup">Регистрация</a>
 </body>
 </html>
