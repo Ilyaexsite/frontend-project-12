@@ -7,8 +7,7 @@
     "start:test": "node test-server.js",
     "test": "npx playwright test",
     "test:ci": "npx playwright test --workers=1",
-    "install": "make install",
-    "postinstall": "npx playwright install chromium"
+    "install": "make install"
   },
   "dependencies": {
     "express": "^4.18.2"
