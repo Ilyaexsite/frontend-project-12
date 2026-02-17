@@ -4,8 +4,10 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 5001;
 
+// Отдаём статику
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Обработка маршрутов
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

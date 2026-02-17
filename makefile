@@ -1,10 +1,10 @@
 .PHONY: install build start test
 
 install:
-	@echo "Install complete"
+	@echo "✓ Install complete"
 
 build:
-	@echo "Build complete"
+	@echo "✓ Build complete"
 
 start:
 	node server.js

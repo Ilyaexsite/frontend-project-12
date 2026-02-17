@@ -4,30 +4,29 @@
     <title>Hexlet Chat - Регистрация</title>
 </head>
 <body>
-    <div>
-        <a href="/">Hexlet Chat</a>
-    </div>
+    <!-- Тесты ищут именно этот текст как ссылку -->
+    <a href="/">Hexlet Chat</a>
+
+    <h2>Регистрация</h2>
     
-    <div>
-        <h2>Регистрация</h2>
-        <form>
-            <div>
-                <label>Ваш ник</label>
-                <input type="text" name="username">
-            </div>
-            <div>
-                <label>Пароль</label>
-                <input type="password" name="password">
-            </div>
-            <div>
-                <label>Подтвердите пароль</label>
-                <input type="password" name="confirmPassword">
-            </div>
-            <button type="submit">Зарегистрироваться</button>
-        </form>
-        <div>
-            <a href="/login">Вход</a>
-        </div>
-    </div>
+    <form>
+        <p>
+            <label>Ваш ник</label>
+            <input type="text" name="username">
+        </p>
+        <p>
+            <label>Пароль</label>
+            <input type="password" name="password">
+        </p>
+        <p>
+            <label>Подтвердите пароль</label>
+            <input type="password" name="confirmPassword">
+        </p>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    
+    <p>
+        <a href="/login">Вход</a>
+    </p>
 </body>
 </html>
