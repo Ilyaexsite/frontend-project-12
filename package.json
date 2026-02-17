@@ -6,8 +6,7 @@
     "start": "node server.js",
     "start:test": "node test-server.js",
     "test": "npx playwright test",
-    "install": "make install",
-    "postinstall": "npx --yes playwright install --with-deps chromium"
+    "install": "make install"
   },
   "dependencies": {
     "express": "^4.18.2"
