@@ -22,15 +22,17 @@ const ChannelForm = () => {
   const handleSubmit = useCallback(async (values, { resetForm, setFieldError }) => {
     const cleanChannelName = filter.clean(values.name.trim())
     const newChannel = { name: cleanChannelName }
-    
+
     try {
       await dispatch(createChannelsByToken({ token, newChannel })).unwrap()
       handleCloseModal()
       resetForm()
-    } catch (error) {
+    } 
+    catch (error) {
       if (error.message?.includes('409')) {
         setFieldError('name', t('channelForm.errors.alreadyExists'))
-      } else {
+      } 
+      else {
         setFieldError('name', t('channelForm.errors.generic'))
       }
     }
@@ -75,8 +77,8 @@ const ChannelForm = () => {
           >
             {t('channelForm.cancel')}
           </Button>
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={!formik.values.name.trim() || formik.isSubmitting}
           >
             {formik.isSubmitting ? t('channelForm.submitting') : t('channelForm.submit')}

@@ -33,17 +33,19 @@ const RenameChannelModal = () => {
     const editedChannel = { name: cleanChannelName }
 
     try {
-      await dispatch(renameChannelById({ 
-        token, 
-        id: currentChannel.id, 
-        editedChannel 
-      })).unwrap()
+      await dispatch(renameChannelById({
+        token,
+        id: currentChannel.id,
+        editedChannel
+      })).unwrap(),
       handleCloseModal()
       resetForm()
-    } catch (error) {
+    } 
+    catch (error) {
       if (error.message?.includes('409')) {
         setFieldError('name', t('renameChannelModal.errors.alreadyExists'))
-      } else {
+      } 
+      else {
         setFieldError('name', t('renameChannelModal.errors.generic'))
       }
     }
@@ -109,7 +111,7 @@ const RenameChannelModal = () => {
               >
                 {t('renameChannelModal.cancel')}
               </Button>
-              <Button 
+              <Button
                 type="submit"
                 disabled={!formik.values.name.trim() || formik.isSubmitting}
               >
