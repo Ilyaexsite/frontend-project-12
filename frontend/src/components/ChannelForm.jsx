@@ -2,7 +2,7 @@ import { useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { setStatusChannelModal } from '../store/slices/modalsSlice'
 import { channelSchema } from '../utils/validation/validationForm'
 import { createChannelsByToken } from '../store/slices/channelsSlice'
@@ -15,18 +15,33 @@ const ChannelForm = () => {
   const channelsData = useSelector(({ channels }) => channels.channelsData)
   const filter = useContext(FilterContext)
 
+  const handleCloseModal = useCallback(() => {
+    dispatch(setStatusChannelModal({ modalName: 'addChannelModal', status: false }))
+  }, [dispatch])
+
+  const handleSubmit = useCallback(async (values, { resetForm, setFieldError }) => {
+    const cleanChannelName = filter.clean(values.name.trim())
+    const newChannel = { name: cleanChannelName }
+    
+    try {
+      await dispatch(createChannelsByToken({ token, newChannel })).unwrap()
+      handleCloseModal()
+      resetForm()
+    } catch (error) {
+      if (error.message?.includes('409')) {
+        setFieldError('name', t('channelForm.errors.alreadyExists'))
+      } else {
+        setFieldError('name', t('channelForm.errors.generic'))
+      }
+    }
+  }, [filter, token, dispatch, handleCloseModal, t])
+
   const formik = useFormik({
     initialValues: {
       name: '',
     },
     validationSchema: channelSchema(channelsData, t),
-    onSubmit: (values, { resetForm }) => {
-      const cleanChannelName = filter.clean(values.name.trim())
-      const newChannel = { name: cleanChannelName }
-      dispatch(createChannelsByToken({ token, newChannel }))
-      dispatch(setStatusChannelModal({ modalName: 'addChannelModal', status: false }))
-      resetForm()
-    },
+    onSubmit: handleSubmit,
   })
 
   return (
@@ -41,6 +56,7 @@ const ChannelForm = () => {
           isInvalid={formik.errors.name && formik.touched.name}
           placeholder={t('channelForm.label')}
           autoFocus
+          disabled={formik.isSubmitting}
         />
         <label className="visually-hidden" htmlFor="name">
           {t('channelForm.label')}
@@ -54,11 +70,17 @@ const ChannelForm = () => {
           <Button
             variant="secondary"
             className="me-2"
-            onClick={() => dispatch(setStatusChannelModal({ modalName: 'addChannelModal', status: false }))}
+            onClick={handleCloseModal}
+            disabled={formik.isSubmitting}
           >
             {t('channelForm.cancel')}
           </Button>
-          <Button type="submit">{t('channelForm.submit')}</Button>
+          <Button 
+            type="submit" 
+            disabled={!formik.values.name.trim() || formik.isSubmitting}
+          >
+            {formik.isSubmitting ? t('channelForm.submitting') : t('channelForm.submit')}
+          </Button>
         </div>
       </Form.Group>
     </Form>

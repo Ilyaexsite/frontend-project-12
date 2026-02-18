@@ -1,7 +1,7 @@
 import { Form, Button, InputGroup } from 'react-bootstrap'
 import { useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { useContext } from 'react'
+import { useContext, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendMessagesByToken } from '../store/slices/messagesSlice'
 import FilterContext from '../utils/context/FilterContext'
@@ -14,20 +14,22 @@ const MessageForm = () => {
   const activeChannelId = useSelector(({ channels }) => channels.activeChannelId)
   const filter = useContext(FilterContext)
 
+  const handleSubmit = useCallback((values, { resetForm }) => {
+    const cleanMessages = filter.clean(values.body)
+    const newMessage = {
+      body: cleanMessages,
+      channelId: activeChannelId,
+      username,
+    }
+    dispatch(sendMessagesByToken({ token, newMessage }))
+    resetForm()
+  }, [filter, activeChannelId, username, dispatch, token])
+
   const formik = useFormik({
     initialValues: {
       body: '',
     },
-    onSubmit: (values, { resetForm }) => {
-      const cleanMessages = filter.clean(values.body)
-      const newMessage = {
-        body: cleanMessages,
-        channelId: activeChannelId,
-        username,
-      }
-      dispatch(sendMessagesByToken({ token, newMessage }))
-      resetForm()
-    },
+    onSubmit: handleSubmit,
   })
 
   return (
@@ -44,10 +46,11 @@ const MessageForm = () => {
           className="border-0 p-0 ps-2"
           onChange={formik.handleChange}
           value={formik.values.body}
+          disabled={formik.isSubmitting}
         />
         <Button
           type="submit"
-          disabled={!formik.values.body}
+          disabled={!formik.values.body || formik.isSubmitting}
           variant="light"
           className="btn-group-vertical"
         >

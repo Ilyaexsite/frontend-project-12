@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
+import { useCallback } from 'react'
 import { signupSchema } from '../utils/validation/validationForm'
 import { signupUser } from '../store/slices/authSlice'
 import avatar from '../assets/avatar_1-D7Cot-zE.jpg'
@@ -19,6 +20,19 @@ const SignupForm = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { t } = useTranslation()
+
+  const handleSubmit = useCallback(async (values, { setFieldError }) => {
+    const { username, password } = values
+    const resultAction = await dispatch(signupUser({ username, password }))
+
+    if (signupUser.fulfilled.type === resultAction.type) {
+      navigate(linkRoutes.main)
+    }
+    if (signupUser.rejected.type === resultAction.type && resultAction.error.message.includes('409')) {
+      setFieldError('username', t('registration.errors.alredyRegistred'))
+    }
+  }, [dispatch, navigate, t])
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -26,17 +40,7 @@ const SignupForm = () => {
       confirmPassword: '',
     },
     validationSchema: signupSchema(t),
-    onSubmit: async (values, { setFieldError }) => {
-      const { username, password } = values
-      const resultAction = await dispatch(signupUser({ username, password }))
-
-      if (signupUser.fulfilled.type === resultAction.type) {
-        navigate(linkRoutes.main)
-      }
-      if (signupUser.rejected.type === resultAction.type && resultAction.error.message.includes('409')) {
-        setFieldError('username', t('registration.errors.alredyRegistred'))
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (
@@ -50,6 +54,7 @@ const SignupForm = () => {
               </Col>
               <Form className="w-50" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('registration.title')}</h1>
+                
                 <Form.Group className="form-floating mb-3" controlId="username">
                   <Form.Control
                     className="form-control"
@@ -71,6 +76,7 @@ const SignupForm = () => {
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
+
                 <Form.Group className="form-floating mb-3" controlId="password">
                   <Form.Control
                     className="form-control"
@@ -91,6 +97,7 @@ const SignupForm = () => {
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
+
                 <Form.Group className="form-floating mb-3" controlId="confirmPassword">
                   <Form.Control
                     className="form-control"
@@ -111,12 +118,14 @@ const SignupForm = () => {
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
+
                 <Button
                   type="submit"
                   variant="outline-primary"
                   className="w-100 mb-3 btn"
+                  disabled={formik.isSubmitting}
                 >
-                  {t('registration.button')}
+                  {formik.isSubmitting ? t('registration.submitting') : t('registration.button')}
                 </Button>
               </Form>
             </Card.Body>

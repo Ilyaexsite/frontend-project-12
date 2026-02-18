@@ -8,7 +8,7 @@ let socket = null
 
 export const initializeSocket = (i18n) => {
   socket = io()
-  
+
   socket.on('newMessage', (payload) => {
     store.dispatch(addMessage(payload))
   })
