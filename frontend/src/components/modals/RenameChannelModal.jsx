@@ -36,15 +36,15 @@ const RenameChannelModal = () => {
       await dispatch(renameChannelById({
         token,
         id: currentChannel.id,
-        editedChannel
+        editedChannel,
       })).unwrap(),
       handleCloseModal()
       resetForm()
-    } 
+    }
     catch (error) {
       if (error.message?.includes('409')) {
         setFieldError('name', t('renameChannelModal.errors.alreadyExists'))
-      } 
+      }
       else {
         setFieldError('name', t('renameChannelModal.errors.generic'))
       }

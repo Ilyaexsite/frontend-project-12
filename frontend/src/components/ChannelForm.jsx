@@ -27,11 +27,11 @@ const ChannelForm = () => {
       await dispatch(createChannelsByToken({ token, newChannel })).unwrap()
       handleCloseModal()
       resetForm()
-    } 
+    }
     catch (error) {
       if (error.message?.includes('409')) {
         setFieldError('name', t('channelForm.errors.alreadyExists'))
-      } 
+      }
       else {
         setFieldError('name', t('channelForm.errors.generic'))
       }
